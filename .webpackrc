@@ -1,2 +1,31 @@
 {
+  "entry": "src/index.js",
+   "disableCSSModules": false,
+     "publicPath": "/",
+     "hash": true,
+     "theme": {
+
+      },
+  "env": {
+    "development": {
+      "extraBabelPlugins": [
+        "dva-hmr",
+        "transform-regenerator",
+        ["import", { "libraryName": "antd", "style": "true" }]
+      ]
+    },
+    "production": {
+      "extraBabelPlugins": [
+        "transform-regenerator",
+        ["import", { "libraryName": "antd", "style": "true" }]
+      ]
+    }
+  },
+  "proxy": {
+       "/api": {
+         "target": "http://localhost:8080",
+         "changeOrigin": true
+       }
+     }
+
 }

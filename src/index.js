@@ -1,8 +1,28 @@
 import dva from 'dva';
 import './index.css';
 
+import browserHistory from 'history/createBrowserHistory'
+import 'antd/dist/antd.less'
+import {createLogger} from 'redux-logger';
+
+
 // 1. Initialize
-const app = dva();
+let  app = null;
+if (process.env.NODE_ENV !== 'production') {
+  app = dva({
+    history:browserHistory(),
+    onAction: createLogger({
+      level: 'info',
+      collapsed: true,
+    })
+  });
+}
+else {
+ app = dva({
+    history:browserHistory()
+  });
+}
+
 
 // 2. Plugins
 // app.use({});

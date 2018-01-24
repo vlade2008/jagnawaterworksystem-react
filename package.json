@@ -7,12 +7,21 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "antd": "^3.1.4",
+    "axios": "^0.17.1",
+    "bluebird": "^3.5.1",
     "dva": "^2.1.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.20.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "redux-logger": "^3.0.6",
+    "babel-plugin-import": "^1.6.2",
+    "react-addons-update": "^15.6.2"
   },
   "devDependencies": {
     "babel-plugin-dva-hmr": "^0.3.2",
+    "babel-plugin-transform-regenerator": "^6.24.0",
     "eslint": "^4.14.0",
     "eslint-config-umi": "^0.1.1",
     "eslint-plugin-flowtype": "^2.34.1",
