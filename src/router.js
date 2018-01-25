@@ -1,17 +1,46 @@
 import React from 'react';
 import { Router } from 'dva/router';
-import IndexPage from './routes/IndexPage';
 import RouteWithSubRoutes from './routes/RouteWithSubRoutes';
+import App from './components/App';
+import Main from './components/Main';
+
+import Home from './routes/site/Home';
+import AboutUs from './routes/site/AboutUs';
+import ConsumerInquiry from './routes/site/ConsumerInquiry'
+
+
 
 function RouterConfig({ history }) {
 
 const routes = [
     {
       path: '/',
-      exact: false,
-      component: IndexPage,
+      component: App,
+      routes:[
+        {
+          path:'/',
+          component:Main,
+          routes:[
+            {
+              path:'/',
+              component:Home,
+              exact:true
+            },
+            {
+              path:'/aboutus',
+              component:AboutUs,
+              exact:true
+            },
+            {
+              path:'/consumerinquiry',
+              component:ConsumerInquiry,
+              exact:true
+            }
+          ]
+        }
+      ]
     }
-  ];	
+  ];
 
 
   return (

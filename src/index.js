@@ -31,7 +31,7 @@ else {
 // app.model(require('./models/example').default);
 
 // 4. Router
-app.router(require('./router').default);
+app.router(require('./router'));
 
 // 5. Start
 app.start('#root');

@@ -10,12 +10,14 @@
     "development": {
       "extraBabelPlugins": [
         "dva-hmr",
+        "transform-runtime",
         "transform-regenerator",
         ["import", { "libraryName": "antd", "style": "true" }]
       ]
     },
     "production": {
       "extraBabelPlugins": [
+        "transform-runtime",
         "transform-regenerator",
         ["import", { "libraryName": "antd", "style": "true" }]
       ]

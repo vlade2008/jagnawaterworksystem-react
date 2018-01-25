@@ -1,7 +1,7 @@
-import {  Route} from 'dva/router';
+import { Route } from 'dva/router';
 import React from 'react';
 
-//Includes ...route
+
 const RouteWithSubRoutes = (route) => (
     <Route path={route.path} exact={route.exact} render={props => (
         <route.component {...props} {...route} routes={route.routes || []}/>
