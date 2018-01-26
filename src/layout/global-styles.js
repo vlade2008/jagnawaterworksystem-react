@@ -1,3 +1,7 @@
+import { injectGlobal } from 'styled-components'
+
+/* eslint no-unused-expressions: 0 */
+injectGlobal`
 
 html, body, :global(#root) {
   height: 100%;
@@ -32,3 +36,5 @@ html, body, :global(#root) {
     display: inline-block;
   }
 }
+
+`

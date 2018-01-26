@@ -1,5 +1,5 @@
 import dva from 'dva';
-import './index.css';
+import './layout/global-styles';
 
 import browserHistory from 'history/createBrowserHistory'
 import 'antd/dist/antd.less'

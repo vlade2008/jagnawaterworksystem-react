@@ -64,16 +64,22 @@ render(){
           mode="horizontal"
         >
           <Menu.Item style={{color:'#108ee9'}}></Menu.Item>
-          <Menu.Item key="/">
-            <Link to={"/"}><Icon type="home" />Home</Link>
-          </Menu.Item>
-          {!_.get(this.props.auth,'account.login','') ?
+
+          {
+            !this.props.logintest ? (
+              <Menu.Item key="/">
+                <Link to={"/"}><Icon type="home" />Home</Link>
+              </Menu.Item>
+            ): null
+          }
+
+          {!_.get(this.props.auth,'account.login','')  && !this.props.logintest ?
             (<Menu.Item key="/register">
               <Link to={"/aboutus"}><Icon type="schedule" />About us</Link>
             </Menu.Item>)
             :null
           }
-          {_.get(this.props.auth,'account.login','') ?
+          {!_.get(this.props.auth,'account.login','') && !this.props.logintest ?
             (<Menu.Item key="/cart">
             <Link to={"/consumerinquiry"}><Icon type="shopping-cart" />Consumer Inquiry</Link>
           </Menu.Item>)
@@ -82,7 +88,7 @@ render(){
 
 
           <Menu.Item key="/login">
-                         {_.get(this.props.auth,'account.login','') ?
+                         {_.get(this.props.auth,'account.login','') || this.props.logintest ?
                            <Dropdown overlay={content}>
                              <a className="ant-dropdown-link" href="">
                                <Avatar style={{lineHeight: '64px',verticalAlign: 'middle',marginRight:'10px'}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />

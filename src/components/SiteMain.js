@@ -1,17 +1,17 @@
 import React from 'react';
 import RouteWithSubRoutes from '../routes/RouteWithSubRoutes';
-import SideMenu from './SideMenu';
 import SiteMenu from "../routes/site/SiteMenu";
 import { Layout, Affix } from 'antd';
 const {Content } = Layout;
 
 
-function Main({routes}) {
+function SiteMain({routes}) {
   return (
 
     <Layout style={{backgroundColor:'white'}}>
       <Affix>
-        <SideMenu pathName={location.pathname}/>
+         {/* for test only  // if login justt TRUE=logintest FALSE=logintest */}
+        <SiteMenu pathName={location.pathname} logintest={true}/>
       </Affix>
 
       <Layout>
@@ -35,4 +35,4 @@ function Main({routes}) {
 
 }
 
-export default Main;
+export default SiteMain;

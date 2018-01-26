@@ -4,7 +4,7 @@ class ConsumerInquiry extends React.Component {
   render() {
     return (
       <div>
-          About us
+          ConsumerInquiry
       </div>
     );
   }

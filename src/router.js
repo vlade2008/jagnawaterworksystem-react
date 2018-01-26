@@ -3,10 +3,12 @@ import { Router } from 'dva/router';
 import RouteWithSubRoutes from './routes/RouteWithSubRoutes';
 import App from './components/App';
 import Main from './components/Main';
+import SiteMain from './components/SiteMain'
 
 import Home from './routes/site/Home';
 import AboutUs from './routes/site/AboutUs';
 import ConsumerInquiry from './routes/site/ConsumerInquiry'
+import Login from './routes/Login/Login'
 
 
 
@@ -19,7 +21,7 @@ const routes = [
       routes:[
         {
           path:'/',
-          component:Main,
+          component:SiteMain,
           routes:[
             {
               path:'/',
@@ -35,6 +37,16 @@ const routes = [
               path:'/consumerinquiry',
               component:ConsumerInquiry,
               exact:true
+            },
+            {
+              path:'/login',
+              component:Login,
+              exact:true
+            },
+            {
+              path:'/dashboard',
+              exact:true,
+              component:Main
             }
           ]
         }
