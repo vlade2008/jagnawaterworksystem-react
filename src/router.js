@@ -11,6 +11,11 @@ import ConsumerInquiry from './routes/site/ConsumerInquiry'
 import Login from './routes/Login/Login'
 
 
+/// Admin file
+import Dashboard from './routes/Dashboard/Dashboard'
+import Consumers from './routes/Consumers/Consumers'
+import ConsumersContainer from './routes/Consumers/ConsumersContainer'
+
 
 function RouterConfig({ history }) {
 
@@ -45,8 +50,25 @@ const routes = [
             },
             {
               path:'/dashboard',
-              exact:true,
-              component:Main
+              exact:false,
+              component:Main,
+              routes:[
+                {
+                  path:'/dashboard',
+                  exact:true,
+                  component:Dashboard
+                },
+                {
+                  path:'/dashboard/consumers',
+                  exact:false,
+                  component:ConsumersContainer,
+                  routes:[{
+                    path:'/dashboard/consumers',
+                    exact:true,
+                    component:Consumers
+                  }]
+                },
+              ]
             }
           ]
         }

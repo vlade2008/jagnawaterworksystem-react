@@ -13,34 +13,36 @@ const SideMenu = (props) => {
   return (
     <Layout.Sider style={{backgroundColor:'white'}}>
       <Menu mode="inline"
-            theme="light"
-            selectedKeys={[keys]}
-            style={{ width: 256 }}
-            defaultOpenKeys={['admin','clinic','subscriptions']}
+        theme="light"
+        selectedKeys={[keys]}
+        style={{ width: 180 }}
+        defaultOpenKeys={['bills']}
       >
-         <Menu.Item key="1">Option 1</Menu.Item>
-         <Menu.Item key="2">Option 2</Menu.Item>
+        <Menu.Item key="1">
+          <Link to={'/dashboard'}>Dashboard</Link>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Link to={'/dashboard/consumers'}>Consumers</Link>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <Link to={'/dashboard/payment'}>Payment</Link>
+        </Menu.Item>
 
 
-        {/* <Menu.Item key="dashboard"> <Link to={"/my-account"}><Icon type="pie-chart" /> Dashboard</Link></Menu.Item>,
-        <Menu.SubMenu key="clinic" title={<div><Icon type="home" /> Clinics</div>}>
-          <Menu.Item key="list">
-            <Link to={"/my-account/clinic/list"}><Icon type="environment" />Clinic List</Link></Menu.Item>
-          <Menu.Item key="users">
-            <Link to={"/my-account/clinic/users"}><Icon type="user" />Clinic Users</Link></Menu.Item>
-          <Menu.Item key="services">
-            <Link to={"/my-account/clinic/services"}><Icon type="profile" />Clinic Services</Link></Menu.Item>
-          <Menu.Item key="items">
-            <Link to={"/my-account/clinic/items"}><Icon type="schedule" />Clinic Items</Link></Menu.Item>
-          <Menu.Item key="suppliers">
-            <Link to={"/my-account/clinic/suppliers"}><Icon type="schedule" />Suppliers</Link></Menu.Item>
-        </Menu.SubMenu>,
-        <Menu.SubMenu key="subscriptions" title={<div><Icon type="shop" /> Subscriptions</div>}>
-          <Menu.Item key="active-subsciption">
-            <Link to={"/my-account/subscriptions/active-subsciption"}><Icon type="calendar" />Active Subscriptions</Link></Menu.Item>
-          <Menu.Item key="cart">
-            <Link to={"/my-account/subscriptions/cart"}><Icon type="shopping-cart" /> Cart</Link></Menu.Item>
-        </Menu.SubMenu> */}
+          <Menu.SubMenu key="sub1" title={<span><Icon type="appstore" /><span>Bills</span></span>}>
+            <Menu.Item key="5">
+              <Link to={'/dashboard/monthlybills'}>Monthly Bills</Link>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <Link to={'/dashboard/paidbills'}>Paid Bills</Link>
+            </Menu.Item>
+            <Menu.Item key="7">
+              <Link to={'/dashboard/unpaid-biils'}>Unpaid Bills</Link>
+            </Menu.Item>
+
+          </Menu.SubMenu>
+
+
 
       </Menu>
 
