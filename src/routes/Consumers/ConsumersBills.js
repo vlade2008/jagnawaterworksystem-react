@@ -3,38 +3,14 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Icon, Divider ,Button } from 'antd';
 
-import ConsumersForm from './ConsumersForm'
 
-class Consumers extends React.Component {
+class ConsumersBills extends React.Component {
 constructor(props){
   super(props);
-
-  this.state = {
-    isModal:false
-  }
-
 }
 
- onOpenModal = () =>{
-   this.setState({
-     isModal:true
-   })
- }
-
- onCloseModal = () =>{
-   this.setState({
-     isModal:false
-   })
- }
-
-onChangeUrl = url => {
-    return () => {
-      this.props.history.push(url)
-    }
-  } 
 
   render() {
-
 
 
     const columns = [{
@@ -55,7 +31,7 @@ onChangeUrl = url => {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a onClick={this.onChangeUrl('/dashboard/consumers/1232131')}>Action 一 {record.name}</a>
+          <a>Action 一 {record.name}</a>
           <Divider type="vertical" />
           <a href="#">Delete</a>
           <Divider type="vertical" />
@@ -66,7 +42,7 @@ onChangeUrl = url => {
       ),
     }];
 
-    const data = [{
+ const data = [{
       key: '1',
       name: 'John Brown',
       age: 32,
@@ -82,18 +58,11 @@ onChangeUrl = url => {
       age: 32,
       address: 'Sidney No. 1 Lake Park',
     }];
+    
 
     return (
       <div>
-        <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Consumers</Button>
         <Table columns={columns} dataSource={data} />
-
-
-        {
-          this.state.isModal ?(
-            <ConsumersForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} />
-          ):null
-        }
 
       </div>
     )
@@ -108,4 +77,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(Consumers)
+export default connect(mapStateToProps)(ConsumersBills)
