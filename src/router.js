@@ -17,6 +17,9 @@ import Consumers from './routes/Consumers/Consumers'
 import ConsumersBills from './routes/Consumers/ConsumersBills'
 
 
+//users
+import Users from './routes/Users/Users'
+
 function RouterConfig({ history }) {
 
 const routes = [
@@ -63,11 +66,16 @@ const routes = [
                   exact:true,
                   component:Consumers,
                 },
-{
+                {
                   path:'/dashboard/consumers/:id',
                   exact:true,
                   component:ConsumersBills,
-                },                
+                },
+                {
+                  path:'/dashboard/users',
+                  exact:true,
+                  component:Users
+                },
               ]
             }
           ]

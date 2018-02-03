@@ -30,9 +30,6 @@ const SideMenu = (props) => {
 
 
           <Menu.SubMenu key="sub1" title={<span><Icon type="appstore" /><span>Bills</span></span>}>
-            <Menu.Item key="5">
-              <Link to={'/dashboard/monthlybills'}>Monthly Bills</Link>
-            </Menu.Item>
             <Menu.Item key="6">
               <Link to={'/dashboard/paidbills'}>Paid Bills</Link>
             </Menu.Item>
@@ -41,6 +38,10 @@ const SideMenu = (props) => {
             </Menu.Item>
 
           </Menu.SubMenu>
+
+          <Menu.Item key="8">
+            <Link to={'/dashboard/users'}>Users</Link>
+          </Menu.Item>
 
 
 
