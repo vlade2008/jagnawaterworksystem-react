@@ -25,9 +25,32 @@ class UserForm extends React.Component {
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
-         console.log(values,'success submit');
+            this.props.dispatch({
+              type:'users/upsertUser',
+              payload: values,
+              callback: this.getResult
+            });
        }
      });
+  }
+
+  getResult = (isSuccess,error) => {
+    let modalDialog = null
+    if(isSuccess){
+      modalDialog = Modal.success({
+        title: 'Success',
+        content: 'Changes saved!'
+      });
+    }else{
+      modalDialog = Modal.error({
+        title: 'Failed',
+        content: `Record failed to save! ${error}`
+      });
+    }
+
+    // this.timeoutHandle = setTimeout(() => {
+    //   if(modalDialog) modalDialog.destroy();
+    // }, 3000);
   }
 
   handleConfirmBlur = (e) => {
@@ -112,7 +135,7 @@ class UserForm extends React.Component {
                       message: 'Please confirm your password!',
                     },{validator: this.checkPassword}
                   ],
-                })(<Input size="large" type="password" onBlur={this.handleConfirmBlur} />)}
+                })(<Input size="large" placeholder='Please confirm your password!' type="password" onBlur={this.handleConfirmBlur} />)}
               </FormItem>
 
               <FormItem hasFeedback >

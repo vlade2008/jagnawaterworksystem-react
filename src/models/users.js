@@ -1,57 +1,79 @@
-// import {withRouter,routerRedux} from 'dva/router'
-//
-// import {get,getLogin,post} from '../rest/rest'
-//
-//
-// import update from 'react-addons-update';
-//
-// export default {
-//   namespace: 'users',
-//   state: {
-//     api_key:''
-//   },
-//   reducers: {
-//
-//
-//
-//   },
-//   effects: {
-//
-//
-//
-//     login:[function *({payload},{call,put}){
-//       try{
-//         let account = null;
-//         yield getLogin('/api/login',{
-//           params:{
-//             username:payload.username,
-//             password:payload.password,
-//           }
-//         }).then(response => {
-//
-//            account = response.data
-//
-//
-//          })
-//         if(!account.error){
-//           yield put({
-//             type:"loginSuccess",
-//             account:account.user,
-//             api_key:account.api_key,
-//             isLogin:account.error
-//         });
-//         localStorage.setItem('api_key',account.api_key)
-//         localStorage.setItem('userlevel',account.user.userlevel)
-//          yield put(routerRedux.push("/dashboard"));
-//         }
-//       }
-//       catch (error){
-//
-//         yield put({ type: 'loginFailed'});
-//
-//       }
-//
-//     },{type: 'takeLatest'}]
-//   },
-//   subscriptions: {},
-// };
+import {withRouter,routerRedux} from 'dva/router'
+
+import {get,getLogin,post} from '../rest/rest'
+
+
+import update from 'react-addons-update';
+
+export default {
+  namespace: 'users',
+  state: {
+    records:[],
+    activeRecord:{}
+  },
+  reducers: {
+
+    getAllUsersFailed(state,{message}){
+      return {
+        ...state
+      }
+    },
+
+    getAllUsersSuccess(state,{payload}){
+      return update(state,{
+          records: {
+            $set: payload
+          }
+      });
+    },
+
+  },
+  effects: {
+
+
+    getAllUsers:[function *({},{call,put}){
+      try{
+
+
+        let users = null;
+        yield get('/api/users').then(response => {
+
+           users = response.data
+
+
+         })
+        if(!_.isEmpty(users)){
+          yield put({
+            type:"getAllUsersSuccess",
+            payload:users
+          });
+        }
+
+
+      }
+      catch (error){
+
+        yield put({ type: 'getAllUsersFailed'});
+
+      }
+   },{type: 'takeLatest'}],
+
+
+    upsertUser:[function *({payload,callback = null},{call,put}){
+      delete payload.confirm;
+      delete payload.userlevel;
+      try{
+        yield post('/api/users',payload).then(response => {
+
+           if(callback) callback(true);
+
+         })
+      }
+      catch (error){
+        if(callback) callback(false,error);
+      }
+
+    },{type: 'takeLatest'}]
+  },
+  subscriptions: {},
+};

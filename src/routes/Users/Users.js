@@ -14,6 +14,19 @@ constructor(props){
 }
 
 
+componentWillMount() {
+    this.getUsers();
+  }
+
+getUsers = () =>{
+  this.props.dispatch({
+      type:'users/getAllUsers'
+    });
+}
+
+
+
+
   onOpenModal = () =>{
     this.setState({
       isModal:true
@@ -26,62 +39,52 @@ constructor(props){
     })
   }
 
+  onEdit = (idx) =>{
+    return (value)=>{
+        console.log(idx,'index');
+    }
+  }
+
+  onDelete = (idx) =>{
+    return (value)=>{
+        console.log(idx,'index');
+    }
+  }
+
 
   render() {
 
-
     const columns = [{
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a href="#">{text}</a>,
+      title: 'Username',
+      dataIndex: 'username',
+      key: 'username'
     }, {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    }, {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Userlevel',
+      dataIndex: 'userlevel',
+      key: 'userlevel',
     }, {
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
+      render: (text, record,idx) => (
         <span>
-          <a>Action 一 {record.name}</a>
+          <a onClick={this.onEdit(record.key)}>Edit</a>
           <Divider type="vertical" />
-          <a href="#">Delete</a>
-          <Divider type="vertical" />
-          <a href="#" className="ant-dropdown-link">
-            More actions <Icon type="down" />
-          </a>
+          <a onClick={this.onDelete(record.key)}>Delete</a>
         </span>
       ),
     }];
 
- const data = [{
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    }];
 
+  let data = _.map(this.props.users.records,(item,i)=>{
+    item.key = i
+    return item
+  })
 
     return (
       <div>
           <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Users</Button>
 
-        <Table columns={columns} dataSource={data} />
+          <Table columns={columns} dataSource={data} />
 
 
         {
@@ -101,7 +104,7 @@ constructor(props){
 
 function mapStateToProps(state){
   return {
-
+    users:state.users
   }
 }
 

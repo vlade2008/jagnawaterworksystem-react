@@ -15,6 +15,18 @@ constructor(props){
 
 }
 
+componentWillMount() {
+    this.getConsumers();
+  }
+
+getConsumers = () =>{
+  this.props.dispatch({
+      type:'consumers/getAllConsumers'
+    });
+}
+
+
+
  onOpenModal = () =>{
    this.setState({
      isModal:true
@@ -31,7 +43,7 @@ onChangeUrl = url => {
     return () => {
       this.props.history.push(url)
     }
-  } 
+  }
 
   render() {
 

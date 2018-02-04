@@ -29,7 +29,8 @@ else {
 
 // 3. Model
 app.model(require('./models/auth'));
-
+app.model(require('./models/users'));
+app.model(require('./models/consumers'));
 
 // 4. Router
 app.router(require('./router'));
