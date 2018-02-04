@@ -25,7 +25,7 @@ class UserForm extends React.Component {
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
-         console.log(err,'oh no');
+         console.log(values,'success submit');
        }
      });
   }
@@ -90,7 +90,7 @@ class UserForm extends React.Component {
                       message: 'Please input your username!',
                     },
                   ],
-                })(<Input size="large" placeholder="Username" />)}
+                })(<Input size="large" placeholder="Username"  />)}
               </FormItem>
 
               <FormItem hasFeedback >
@@ -101,7 +101,7 @@ class UserForm extends React.Component {
                       message: 'Please input your password!',
                     },{validator: this.checkConfirm}
                   ],
-                })(<Input size="large" placeholder="Password" />)}
+                })(<Input size="large" type="password" placeholder="Password" />)}
               </FormItem>
 
               <FormItem hasFeedback >

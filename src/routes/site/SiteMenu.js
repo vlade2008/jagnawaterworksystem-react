@@ -23,30 +23,27 @@ class SiteMenu extends React.Component{
     });
   }
 
+  onlogout = () =>{
+     localStorage.removeItem("api_key");
+    this.props.dispatch({
+      type:'auth/logout'
+    });
+
+
+  }
+
 
 render(){
+
+
+  let islogin = !_.isEmpty(localStorage.getItem('api_key')) ? true : false
+
 
   let path = this.props.pathName;
   const content = (
     <Menu>
       <Menu.Item>
-      <span type={"dashed"} icon={"appstore-o"}
-              onClick={()=> {
-                this.props.dispatch({
-                  type: 'auth/loginSuccess'
-                });
-              }}>Dashboard</span>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item>
-      <span type={"dashed"} onClick={()=>{
-
-        this.props.dispatch({
-          type:'auth/logout'
-        });
-
-
-      }}>Logout</span>
+      <span type={"dashed"} onClick={this.onlogout}>Logout</span>
       </Menu.Item>
 
     </Menu>
@@ -66,20 +63,20 @@ render(){
           <Menu.Item style={{color:'#108ee9'}}></Menu.Item>
 
           {
-            !this.props.logintest ? (
+            !islogin ? (
               <Menu.Item key="/">
                 <Link to={"/"}><Icon type="home" />Home</Link>
               </Menu.Item>
             ): null
           }
 
-          {!_.get(this.props.auth,'account.login','')  && !this.props.logintest ?
+          {!islogin ?
             (<Menu.Item key="/register">
               <Link to={"/aboutus"}><Icon type="schedule" />About us</Link>
             </Menu.Item>)
             :null
           }
-          {!_.get(this.props.auth,'account.login','') && !this.props.logintest ?
+          {!islogin ?
             (<Menu.Item key="/cart">
             <Link to={"/consumerinquiry"}><Icon type="shopping-cart" />Consumer Inquiry</Link>
           </Menu.Item>)
@@ -88,11 +85,11 @@ render(){
 
 
           <Menu.Item key="/login">
-                         {_.get(this.props.auth,'account.login','') || this.props.logintest ?
+                         {islogin?
                            <Dropdown overlay={content}>
                              <a className="ant-dropdown-link" href="">
                                <Avatar style={{lineHeight: '64px',verticalAlign: 'middle',marginRight:'10px'}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                               {_.get(this.props.auth,'account.login','')}<Icon type="down" />
+                               <Icon type="down" />
                              </a>
                            </Dropdown>
                            :

@@ -10,8 +10,7 @@ function SiteMain({routes}) {
 
     <Layout style={{backgroundColor:'white'}}>
       <Affix>
-         {/* for test only  // if login justt TRUE=logintest FALSE=logintest */}
-        <SiteMenu pathName={location.pathname} logintest={true}/>
+        <SiteMenu pathName={location.pathname}/>
       </Affix>
 
       <Layout>

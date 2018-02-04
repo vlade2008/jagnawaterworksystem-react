@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'dva';
 import { Button, Form, Input } from 'antd'
 const FormItem = Form.Item;
+
+import {testrest} from '../../rest/rest'
+
 class Login extends React.Component {
 
 
@@ -9,10 +12,23 @@ class Login extends React.Component {
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
-         console.log(err,'oh no');
+
+         localStorage.removeItem("api_key");
+         localStorage.removeItem("userlevel")
+
+         this.props.dispatch({
+           type:'auth/login',
+           payload: values
+         });
+
+
+
        }
      });
   }
+
+
+
   render() {
      const { getFieldDecorator } = this.props.form;
      const formItemLayout = {
@@ -67,7 +83,7 @@ class Login extends React.Component {
 
 function mapStateToProps(state){
   return {
-
+    auth:state.auth
   }
 }
 
