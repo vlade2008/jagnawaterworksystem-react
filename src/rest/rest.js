@@ -11,14 +11,13 @@ const baseURL = 'http://localhost:8080'
 export const instance = () =>{
 
   let api_key = localStorage.getItem('api_key')
-
   let instance = axios.create({
     baseURL: baseURL,
     timeout: 1000,
-    headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-    xsrfCookieName: 'CSRF-TOKEN',
-    xsrfHeaderName: 'X-Csrf-Token',
-    Authorization:api_key ?  api_key : ''
+    headers:{
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': api_key ? api_key : ''
+    }
   })
   return instance
 

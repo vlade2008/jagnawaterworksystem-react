@@ -36,7 +36,7 @@ export default {
 
 
         let users = null;
-        yield get('/api/users').then(response => {
+        yield get('/userApi/users').then(response => {
 
            users = response.data
 
@@ -63,7 +63,7 @@ export default {
       delete payload.confirm;
       delete payload.userlevel;
       try{
-        yield post('/api/users',payload).then(response => {
+        yield post('/userApi/users',payload).then(response => {
 
            if(callback) callback(true);
 
