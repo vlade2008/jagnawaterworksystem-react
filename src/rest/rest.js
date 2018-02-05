@@ -15,7 +15,7 @@ export const instance = () =>{
     baseURL: baseURL,
     timeout: 1000,
     headers:{
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json;charset=UTF-8',
       'Authorization': api_key ? api_key : ''
     }
   })
