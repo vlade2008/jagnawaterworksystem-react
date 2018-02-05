@@ -60,8 +60,6 @@ export default {
 
 
     upsertUser:[function *({payload,callback = null},{call,put}){
-      delete payload.confirm;
-      delete payload.userlevel;
       try{
         yield post('/api/users',payload).then(response => {
 

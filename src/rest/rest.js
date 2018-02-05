@@ -29,8 +29,8 @@ export const get = (path, config) => {
   return instance().get(path, config)
 }
 
-export const post = (path, config) => {
-  return instance.post(path, body || {}, config)
+export const post = (path,body, config) => {
+  return instance().post(path, body || {}, config)
 }
 
 export const destroy = (path, config) => {
