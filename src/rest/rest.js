@@ -32,6 +32,10 @@ export const post = (path,body, config) => {
   return instance().post(path, body || {}, config)
 }
 
+export const put = (path,body, config) => {
+  return instance().put(path, body || {}, config)
+}
+
 export const destroy = (path, config) => {
   return instance().delete(path, config)
 }

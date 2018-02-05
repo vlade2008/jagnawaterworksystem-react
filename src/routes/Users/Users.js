@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button } from 'antd';
+import { Table, Icon, Divider ,Button,Modal } from 'antd';
 import UserForm from './UserForm'
 
 class Users extends React.Component {
@@ -28,10 +28,15 @@ getUsers = () =>{
 
 
   onOpenModal = () =>{
+    this.props.dispatch({
+      type:'users/updateFormInput',
+      payload: 'clear',
+    });
     this.setState({
       isModal:true
     })
   }
+
 
   onCloseModal = () =>{
     this.setState({
@@ -41,13 +46,37 @@ getUsers = () =>{
 
   onEdit = (idx) =>{
     return (value)=>{
-        console.log(idx,'index');
+        this.setState({
+          isModal:true
+        },()=>{
+          this.props.dispatch({
+              type:'users/updateFormInput',
+              payload:this.props.users.records[idx]
+            });
+        })
+
     }
   }
 
   onDelete = (idx) =>{
     return (value)=>{
-        console.log(idx,'index');
+      let modalDialog = null
+      modalDialog = Modal.success({
+        title: 'Are you sure delete this task?',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk:()=> {
+          this.props.dispatch({
+              type:'users/deleteUser',
+              id:this.props.users.records[idx],
+              callback:this.getUsers()
+            });
+        },
+        onCancel:()=> {
+          console.log('Cancel');
+        },
+      });
     }
   }
 
@@ -89,7 +118,7 @@ getUsers = () =>{
 
         {
           this.state.isModal ?(
-            <UserForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} />
+            <UserForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} getUsers={this.getUsers}  />
           ):null
         }
 

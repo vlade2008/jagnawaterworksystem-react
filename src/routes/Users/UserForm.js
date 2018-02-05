@@ -25,11 +25,23 @@ class UserForm extends React.Component {
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
+
+          if (this.props.users.activeRecord.id) {
+            values.id = this.props.users.activeRecord.id
+            this.props.dispatch({
+              type:'users/updateUser',
+              payload: values,
+              callback: this.getResult
+            });
+          }else {
             this.props.dispatch({
               type:'users/upsertUser',
               payload: values,
               callback: this.getResult
             });
+          }
+
+
        }
      });
   }
@@ -39,7 +51,11 @@ class UserForm extends React.Component {
     if(isSuccess){
       modalDialog = Modal.success({
         title: 'Success',
-        content: 'Changes saved!'
+        content: 'Changes saved!',
+        onOk: () => {
+          this.props.getUsers();
+          this.props.onCloseModal();
+        }
       });
     }else{
       modalDialog = Modal.error({
@@ -47,10 +63,6 @@ class UserForm extends React.Component {
         content: `Record failed to save! ${error}`
       });
     }
-
-    // this.timeoutHandle = setTimeout(() => {
-    //   if(modalDialog) modalDialog.destroy();
-    // }, 3000);
   }
 
   handleConfirmBlur = (e) => {
@@ -107,6 +119,7 @@ class UserForm extends React.Component {
           <Form onSubmit={this.handleSubmit}>
               <FormItem hasFeedback >
                 {getFieldDecorator('username', {
+                  initialValue:this.props.users.activeRecord.username,
                   rules: [
                     {
                       required: true,
@@ -140,6 +153,7 @@ class UserForm extends React.Component {
 
               <FormItem hasFeedback >
                 {getFieldDecorator('userlevel', {
+                  initialValue:this.props.users.activeRecord.userlevel,
                   rules: [
                     {
                       required: true,
@@ -184,7 +198,7 @@ class UserForm extends React.Component {
 
 function mapStateToProps(state){
   return {
-
+    users:state.users
   }
 }
 
