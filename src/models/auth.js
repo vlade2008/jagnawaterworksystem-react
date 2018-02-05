@@ -41,33 +41,34 @@ export default {
          yield put({
           type:'logoutSuccess'
         })
+        localStorage.removeItem('api_key')
+        localStorage.removeItem('userlevel')
         yield put(routerRedux.push("/login"));
 
     },
     login:[function *({payload},{call,put}){
       try{
         let account = null;
-        yield get('/api/login',{
+        yield get('/userApi/login',{
           params:{
             username:payload.username,
             password:payload.password,
           }
         }).then(response => {
-
            account = response.data
-
-
          })
+
         if(!account.error){
           yield put({
             type:"loginSuccess",
             account:account.user,
             api_key:account.api_key,
             isLogin:account.error
-        });
-        localStorage.setItem('api_key',account.api_key)
-        localStorage.setItem('userlevel',account.user.userlevel)
-         yield put(routerRedux.push("/dashboard"));
+          });
+          console.log("success login")
+          localStorage.setItem('api_key',account.api_key)
+          localStorage.setItem('userlevel',account.user.userlevel)
+           yield put(routerRedux.push("/dashboard"));
         }
       }
       catch (error){
