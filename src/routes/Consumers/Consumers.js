@@ -103,7 +103,7 @@ onChangeUrl = url => {
 
         {
           this.state.isModal ?(
-            <ConsumersForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} />
+            <ConsumersForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} getConsumers={this.getConsumers} />
           ):null
         }
 

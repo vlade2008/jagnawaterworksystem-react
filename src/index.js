@@ -31,6 +31,7 @@ else {
 app.model(require('./models/auth'));
 app.model(require('./models/users'));
 app.model(require('./models/consumers'));
+app.model(require('./models/consumertypes'))
 
 // 4. Router
 app.router(require('./router'));

@@ -8,24 +8,54 @@ const Option = Select.Option
 
 
 class ConsumersForm extends React.Component {
+  constructor(props){
+    super(props)
+  }
+
 
 
   handleSubmit = (e) =>{
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
-         console.log(err,'oh no');
+         if (this.props.consumers.activeRecord.id) {
+           values.id = this.props.consumers.activeRecord.id
+           this.props.dispatch({
+             type:'consumers/updateConsumers',
+             payload: values,
+             callback: this.getResult
+           });
+         }else {
+           this.props.dispatch({
+             type:'consumers/upsertConsumers',
+             payload: values,
+             callback: this.getResult
+           });
+         }
        }
      });
   }
 
-  checknumber = (rule,value,callback) =>{
-    if (typeof value === 'number') {
-      callback();
-    }else {
-      callback(new Error('Please enter a  number!'))
+  getResult = (isSuccess,error) => {
+    let modalDialog = null
+    if(isSuccess){
+      modalDialog = Modal.success({
+        title: 'Success',
+        content: 'Changes saved!',
+        onOk: () => {
+          this.props.getConsumers();
+          this.props.onCloseModal();
+        }
+      });
+    }else{
+      modalDialog = Modal.error({
+        title: 'Failed',
+        content: `Record failed to save! ${error}`
+      });
     }
   }
+
+
 
   render() {
 
@@ -46,6 +76,7 @@ class ConsumersForm extends React.Component {
     return (
 
       <Modal
+          style={{ width: '100%',top:20 }}
           title="New Form"
           visible={this.props.isModal}
           onCancel={this.props.onCloseModal}
@@ -256,7 +287,7 @@ class ConsumersForm extends React.Component {
 
 function mapStateToProps(state){
   return {
-
+    consumers:state.consumers
   }
 }
 

@@ -2,9 +2,9 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Table, Icon, Divider ,Button,Modal } from 'antd';
-import UserForm from './UserForm'
+import ConsumerTypesForm from './ConsumerTypesForm'
 
-class Users extends React.Component {
+class ConsumerTypes extends React.Component {
 constructor(props){
   super(props);
 
@@ -15,12 +15,12 @@ constructor(props){
 
 
 componentWillMount() {
-    this.getUsers();
+    this.getConsumerType();
   }
 
-getUsers = () =>{
+getConsumerType = () =>{
   this.props.dispatch({
-      type:'users/getAllUsers'
+      type:'consumertypes/getAllConsumertypes'
     });
 }
 
@@ -29,7 +29,7 @@ getUsers = () =>{
 
   onOpenModal = () =>{
     this.props.dispatch({
-      type:'users/updateFormInput',
+      type:'consumertypes/updateFormInput',
       payload: 'clear',
     });
     this.setState({
@@ -50,8 +50,8 @@ getUsers = () =>{
           isModal:true
         },()=>{
           this.props.dispatch({
-              type:'users/updateFormInput',
-              payload:this.props.users.records[idx]
+              type:'consumertypes/updateFormInput',
+              payload:this.props.consumertypes.records[idx]
             });
         })
 
@@ -68,9 +68,9 @@ getUsers = () =>{
         cancelText: 'No',
         onOk:()=> {
           this.props.dispatch({
-              type:'users/deleteUser',
-              id:this.props.users.records[idx].id,
-              callback:this.getUsers
+              type:'consumertypes/deleteConsumerTypes',
+              id:this.props.consumertypes.records[idx].id,
+              callback:this.getConsumerType
             });
         },
         onCancel:()=> {
@@ -84,13 +84,13 @@ getUsers = () =>{
   render() {
 
     const columns = [{
-      title: 'Username',
-      dataIndex: 'username',
-      key: 'username'
+      title: 'Consumer Type',
+      dataIndex: 'name',
+      key: 'name'
     }, {
-      title: 'Userlevel',
-      dataIndex: 'userlevel',
-      key: 'userlevel',
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
     }, {
       title: 'Action',
       key: 'action',
@@ -104,7 +104,7 @@ getUsers = () =>{
     }];
 
 
-  let data = _.map(this.props.users.records,(item,i)=>{
+  let data = _.map(this.props.consumertypes.records,(item,i)=>{
     item.key = i
     return item
   })
@@ -112,13 +112,13 @@ getUsers = () =>{
     return (
       <div>
 
-          <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Users</Button>
+          <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Type</Button>
           <Table columns={columns} dataSource={data}  />
 
 
         {
           this.state.isModal ?(
-            <UserForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} getUsers={this.getUsers}  />
+            <ConsumerTypesForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} getConsumerType={this.getConsumerType}  />
           ):null
         }
 
@@ -133,8 +133,8 @@ getUsers = () =>{
 
 function mapStateToProps(state){
   return {
-    users:state.users
+    consumertypes:state.consumertypes
   }
 }
 
-export default connect(mapStateToProps)(Users)
+export default connect(mapStateToProps)(ConsumerTypes)

@@ -43,6 +43,10 @@ const SideMenu = (props) => {
             <Link to={'/dashboard/users'}>Users</Link>
           </Menu.Item>
 
+          <Menu.Item key="9">
+            <Link to={'/dashboard/consumertypes'}>Consumer Type</Link>
+          </Menu.Item>
+
 
 
       </Menu>

@@ -20,6 +20,9 @@ import ConsumersBills from './routes/Consumers/ConsumersBills'
 //users
 import Users from './routes/Users/Users'
 
+//department
+import ConsumerTypes from './routes/ConsumerTypes/ConsumerTypes'
+
 function RouterConfig({ history }) {
 
 const routes = [
@@ -75,6 +78,11 @@ const routes = [
                   path:'/dashboard/users',
                   exact:true,
                   component:Users
+                },
+                {
+                  path:'/dashboard/consumertypes',
+                  exact:true,
+                  component:ConsumerTypes
                 },
               ]
             }

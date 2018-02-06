@@ -6,20 +6,20 @@ import {get,getLogin,post,destroy} from '../rest/rest'
 import update from 'react-addons-update';
 
 export default {
-  namespace: 'users',
+  namespace: 'consumertypes',
   state: {
     records:[],
     activeRecord:{}
   },
   reducers: {
 
-    getAllUsersFailed(state,{message}){
+    getAllConsumerTypesFailed(state,{message}){
       return {
         ...state
       }
     },
 
-    getAllUsersSuccess(state,{payload}){
+    getAllConsumerTypesSuccess(state,{payload}){
       return update(state,{
           records: {
             $set: payload
@@ -49,21 +49,21 @@ export default {
   effects: {
 
 
-    getAllUsers:[function *({},{call,put}){
+    getAllConsumertypes:[function *({},{call,put}){
       try{
 
 
-        let users = null;
-        yield get('/userApi/users').then(response => {
+        let consumertypes = null;
+        yield get('/api/consumerTypes').then(response => {
 
-           users = response.data
+           consumertypes = response.data
 
 
          })
-        if(!_.isEmpty(users)){
+        if(!_.isEmpty(consumertypes)){
           yield put({
-            type:"getAllUsersSuccess",
-            payload:users
+            type:"getAllConsumerTypesSuccess",
+            payload:consumertypes
           });
         }
 
@@ -71,15 +71,15 @@ export default {
       }
       catch (error){
 
-        yield put({ type: 'getAllUsersFailed'});
+        yield put({ type: 'getAllConsumerTypesFailed'});
 
       }
    },{type: 'takeLatest'}],
 
 
-   deleteUser:[function *({id, callback=null},{call,put}){
+   deleteConsumerTypes:[function *({id, callback=null},{call,put}){
      try{
-       yield destroy(`/userApi/users/${id}`).then(response => {
+       yield destroy(`/api/consumerTypes/${id}`).then(response => {
 
           if(callback) callback(true);
 
@@ -91,9 +91,9 @@ export default {
 
     },{type: 'takeLatest'}],
 
-    upsertUser:[function *({payload,callback = null},{call,put}){
+    upsertConsumerTypes:[function *({payload,callback = null},{call,put}){
       try{
-        yield post('/userApi/users',payload).then(response => {
+        yield post('/api/consumerTypes',payload).then(response => {
 
            if(callback) callback(true);
 
@@ -105,9 +105,9 @@ export default {
 
     },{type: 'takeLatest'}],
 
-    updateUser:[function *({payload,callback = null},{call,put}){
+    updateConsumerTypes:[function *({payload,callback = null},{call,put}){
       try{
-        yield post(`/userApi/users/${payload.id}`,payload).then(response => {
+        yield post(`/api/consumerTypes/${payload.id}`,payload).then(response => {
 
            if(callback) callback(true);
 

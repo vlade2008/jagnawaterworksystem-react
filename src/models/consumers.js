@@ -70,6 +70,22 @@ export default {
     },{type: 'takeLatest'}],
 
 
+    updateConsumers:[function *({payload,callback = null},{call,put}){
+      try{
+        yield post(`/api/consumers/${payload.id}`,payload).then(response => {
+
+           if(callback) callback(true);
+
+         })
+      }
+      catch (error){
+        console.log(error,'mao ne siya');
+        if(callback) callback(false,error);
+      }
+
+    },{type: 'takeLatest'}],
+
+
   },
   subscriptions: {},
 };
