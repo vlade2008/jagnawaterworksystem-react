@@ -1,6 +1,6 @@
 import {withRouter,routerRedux} from 'dva/router'
 
-import {get,getLogin,post} from '../rest/rest'
+import {get,getLogin,post,destroy} from '../rest/rest'
 
 
 import update from 'react-addons-update';
@@ -14,14 +14,55 @@ export default {
   reducers: {
 
 
+    getAllConsumersSuccess(state,{payload}){
+      return update(state,{
+          records: {
+            $set: payload
+          }
+      });
+    },
+
     getAllConsumersFailed(state,{message}){
       return {
         ...state
       }
     },
 
+    updateFormInputSuccess(state,{payload}){
+      if(payload == 'clear'){
+        return update(state,{
+            activeRecord:{
+                $set:{}
+            }
+        });
+      }else{
+        return update(state,{
+            activeRecord:{
+                $merge:payload
+            }
+        });
+      }
+    },
+
+
   },
   effects: {
+
+    deleteConsumers:[function *({id, callback=null},{call,put}){
+      console.log(id);
+      try{
+        yield destroy(`/api/consumers/${id}`).then(response => {
+
+           if(callback) callback(true);
+
+         })
+      }
+      catch (error){
+        if(callback) callback(false,error);
+      }
+
+     },{type: 'takeLatest'}],
+
 
     getAllConsumers:[function *({},{call,put}){
       try{
@@ -32,17 +73,15 @@ export default {
 
            consumers = response.data
 
-           console.log(consumers,'all consumers');
 
          })
-        // if(!account.error){
-        //   yield put({
-        //     type:"loginSuccess",
-        //     account:account.user,
-        //     api_key:account.api_key,
-        //     isLogin:account.error
-        //   });
-        // }
+
+        if(!_.isEmpty(consumers)){
+          yield put({
+            type:"getAllConsumersSuccess",
+            payload:consumers
+          });
+        }
 
 
       }
@@ -71,8 +110,9 @@ export default {
 
 
     updateConsumers:[function *({payload,callback = null},{call,put}){
+      console.log('meng sud siya ane');
       try{
-        yield post(`/api/consumers/${payload.id}`,payload).then(response => {
+        yield post(`/api/consumers/${payload.account_no}`,payload).then(response => {
 
            if(callback) callback(true);
 
@@ -85,6 +125,9 @@ export default {
 
     },{type: 'takeLatest'}],
 
+    *updateFormInput({payload},{call,put}){
+      yield put({ type: 'updateFormInputSuccess', payload});
+    },
 
   },
   subscriptions: {},

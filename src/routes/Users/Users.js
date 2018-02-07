@@ -51,7 +51,8 @@ getUsers = () =>{
         },()=>{
           this.props.dispatch({
               type:'users/updateFormInput',
-              payload:this.props.users.records[idx]
+              payload:this.props.users.records[idx],
+              callback:this.getUsers
             });
         })
 

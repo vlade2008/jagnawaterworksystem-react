@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button } from 'antd';
+import { Table, Icon, Divider ,Button,Modal } from 'antd';
 
 import ConsumersForm from './ConsumersForm'
 
@@ -41,59 +41,83 @@ getConsumers = () =>{
 
 onChangeUrl = url => {
     return () => {
-      this.props.history.push(url)
+      // this.props.history.push(url)
     }
   }
+
+
+  onEdit = (idx) =>{
+    return (value)=>{
+        this.setState({
+          isModal:true
+        },()=>{
+          this.props.dispatch({
+              type:'consumers/updateFormInput',
+              payload:this.props.consumers.records[idx],
+              callback:this.getConsumers
+            });
+        })
+
+    }
+  }
+
+  onDelete = (idx) =>{
+    return (value)=>{
+      let modalDialog = null
+      modalDialog = Modal.confirm({
+        title: 'Are you sure delete this task?',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk:()=> {
+          this.props.dispatch({
+              type:'consumers/deleteConsumers',
+              id:this.props.consumers.records[idx].account_no,
+              callback:this.getConsumers
+            });
+        },
+        onCancel:()=> {
+          console.log('Cancel');
+        },
+      });
+    }
+  }
+
 
   render() {
 
 
 
     const columns = [{
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'Last Name',
+      dataIndex: 'lname',
       key: 'name',
       render: text => <a href="#">{text}</a>,
-    }, {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    }, {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
     }, {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
         <span>
-          <a onClick={this.onChangeUrl('/dashboard/consumers/1232131')}>Action 一 {record.name}</a>
+
+          <a onClick={this.onEdit(record.key)}>Edit</a>
+          <Divider type="vertical" />
+          <a onClick={this.onDelete(record.key)}>Delete</a>
+          {/* <a onClick={this.onChangeUrl('/dashboard/consumers/1232131')}>Action 一 {record.name}</a>
+          <a onClick={this.onChangeUrl(record)}>Action 一 {record.name}</a>
           <Divider type="vertical" />
           <a href="#">Delete</a>
           <Divider type="vertical" />
           <a href="#" className="ant-dropdown-link">
             More actions <Icon type="down" />
-          </a>
+          </a> */}
         </span>
       ),
     }];
 
-    const data = [{
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    }];
+    let data = _.map(this.props.consumers.records,(item,i)=>{
+      item.key = i
+      return item
+    })
 
     return (
       <div>
@@ -116,7 +140,7 @@ onChangeUrl = url => {
 
 function mapStateToProps(state){
   return {
-
+    consumers:state.consumers
   }
 }
 

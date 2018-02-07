@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import { Button, Form, Input,DatePicker,Select,InputNumber,Modal } from 'antd'
 const FormItem = Form.Item;
 const Option = Select.Option
+import moment from 'moment'
 
 
 class ConsumersForm extends React.Component {
@@ -14,12 +15,24 @@ class ConsumersForm extends React.Component {
 
 
 
+  componentWillMount() {
+      this.getConsumerType();
+    }
+
+  getConsumerType = () =>{
+    this.props.dispatch({
+        type:'consumertypes/getAllConsumertypes'
+      });
+  }
+
+
+
   handleSubmit = (e) =>{
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
-         if (this.props.consumers.activeRecord.id) {
-           values.id = this.props.consumers.activeRecord.id
+         if (this.props.consumers.activeRecord.account_no) {
+           values.account_no = this.props.consumers.activeRecord.account_no
            this.props.dispatch({
              type:'consumers/updateConsumers',
              payload: values,
@@ -59,7 +72,7 @@ class ConsumersForm extends React.Component {
 
   render() {
 
-
+    const dateFormat = 'YYYY/MM/DD';
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
      labelCol: {
@@ -80,11 +93,13 @@ class ConsumersForm extends React.Component {
           title="New Form"
           visible={this.props.isModal}
           onCancel={this.props.onCloseModal}
+          footer={null}
         >
 
           <Form onSubmit={this.handleSubmit}>
               <FormItem hasFeedback >
                 {getFieldDecorator('lname', {
+                  initialValue:this.props.consumers.activeRecord.lname,
                   rules: [
                     {
                       required: true,
@@ -96,6 +111,7 @@ class ConsumersForm extends React.Component {
 
               <FormItem hasFeedback >
                 {getFieldDecorator('fname', {
+                  initialValue:this.props.consumers.activeRecord.fname,
                   rules: [
                     {
                       required: true,
@@ -107,72 +123,20 @@ class ConsumersForm extends React.Component {
 
               <FormItem hasFeedback >
                 {getFieldDecorator('mname', {
+                  initialValue:this.props.consumers.activeRecord.mname,
                   rules: [
                     {
                       required: true,
                       message: 'Midllename',
                     },
                   ],
-                })(<Input size="large"  placeholder="mname" />)}
+                })(<Input size="large"  placeholder="Midllename" />)}
               </FormItem>
 
-              <FormItem hasFeedback>
-                {getFieldDecorator('address', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Address',
-                    },
-                  ],
-                })(<Input size="large"  placeholder="address" />)}
-              </FormItem>
-
-              <FormItem hasFeedback >
-                {getFieldDecorator('birth_date', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Birth Date',
-                    },
-                  ],
-                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
-              </FormItem>
-
-              <FormItem hasFeedback>
-                {getFieldDecorator('municipality', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Municipaliry',
-                    },
-                  ],
-                })(<Input size="large" placeholder="Municipaliry" />)}
-              </FormItem>
-
-              <FormItem hasFeedback>
-                {getFieldDecorator('barangay', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Barangay',
-                    },
-                  ],
-                })(<Input size="large" placeholder="Barangay" />)}
-              </FormItem>
-
-              <FormItem hasFeedback>
-                {getFieldDecorator('citizenship', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Citizenship',
-                    },
-                  ],
-                })(<Input size="large" placeholder="Citizenship" />)}
-              </FormItem>
 
               <FormItem hasFeedback>
                 {getFieldDecorator('sex', {
+                  initialValue:this.props.consumers.activeRecord.sex,
                   rules: [
                     {
                       required: true,
@@ -193,9 +157,70 @@ class ConsumersForm extends React.Component {
                 )}
               </FormItem>
 
+              <FormItem hasFeedback>
+                {getFieldDecorator('address', {
+                  initialValue:this.props.consumers.activeRecord.address,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Address',
+                    },
+                  ],
+                })(<Input size="large"  placeholder="address" />)}
+              </FormItem>
+
+              <FormItem hasFeedback >
+                {getFieldDecorator('birth_date', {
+                  initialValue:this.props.consumers.activeRecord.birth_date? moment(this.props.consumers.activeRecord.birth_date,dateFormat) : null,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Birth Date',
+                    },
+                  ],
+                })(<DatePicker format={dateFormat}  placeholder="Birth Date" />)}
+              </FormItem>
+
+              {/* <FormItem hasFeedback>
+                {getFieldDecorator('municipality', {
+                  initialValue:this.props.consumers.activeRecord.municipality,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Municipaliry',
+                    },
+                  ],
+                })(<Input size="large" placeholder="Municipaliry" />)}
+              </FormItem>
 
               <FormItem hasFeedback>
+                {getFieldDecorator('barangay', {
+                  initialValue:this.props.consumers.activeRecord.barangay,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Barangay',
+                    },
+                  ],
+                })(<Input size="large" placeholder="Barangay" />)}
+              </FormItem>
+
+              <FormItem hasFeedback>
+                {getFieldDecorator('citizenship', {
+                  initialValue:this.props.consumers.activeRecord.citizenship,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Citizenship',
+                    },
+                  ],
+                })(<Input size="large" placeholder="Citizenship" />)}
+              </FormItem> */}
+
+
+              {/* <FormItem hasFeedback>
                 {getFieldDecorator('orno_appfee', {
+                  initialValue:this.props.consumers.activeRecord.orno_appfee,
                   rules: [
                     {
                       required: true,
@@ -203,21 +228,22 @@ class ConsumersForm extends React.Component {
                     },
                   ],
                 })(<Input size="large" placeholder="OR NO" />)}
-              </FormItem>
+              </FormItem> */}
 
 
-              <FormItem hasFeedback >
+              {/* <FormItem hasFeedback >
                 {getFieldDecorator('application_date', {
+                  initialValue:this.props.consumers.activeRecord.application_date,
                   rules: [
                     {
                       required: true,
                       message: 'Application Date',
                     },
                   ],
-                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
-              </FormItem>
+                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" placeholder="Application Date" />)}
+              </FormItem> */}
 
-              <FormItem hasFeedback>
+              {/* <FormItem hasFeedback>
                 {getFieldDecorator('appfee', {
                   rules: [
                     {
@@ -228,34 +254,54 @@ class ConsumersForm extends React.Component {
                 })(
                   <Input size="large" type="number" placeholder="App Fee" />
                 )}
-              </FormItem>
+              </FormItem> */}
 
 
               <FormItem hasFeedback>
                 {getFieldDecorator('consumer_type', {
+                  initialValue:this.props.consumers.activeRecord.consumer_type,
                   rules: [
                     {
                       required: true,
                       message: 'Consumer Type',
                     },
                   ],
-                })(<Input size="large" placeholder="Consumer Type" />)}
+                })(
+                  <Select
+                        style={{width:300}}
+                        showSearch
+                        placeholder="Select a type"
+                        optionFilterProp="children"
+                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+
+                          {
+                            this.props.consumertypes.records.map((item,i)=>{
+                              return(
+                                  <Option key={i} value={item.id}>{item.name}</Option>
+                              )
+                            })
+                          }
+
+                      </Select>
+                )}
               </FormItem>
 
 
-              <FormItem hasFeedback >
+              {/* <FormItem hasFeedback >
                 {getFieldDecorator('connection_date', {
+                  initialValue:this.props.consumers.activeRecord.connection_date,
                   rules: [
                     {
                       required: true,
                       message: 'Connection Date',
                     },
                   ],
-                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />)}
-              </FormItem>
+                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss"  placeholder="Connection Date"/>)}
+              </FormItem> */}
 
               <FormItem hasFeedback>
                 {getFieldDecorator('meter_number', {
+                  initialValue:this.props.consumers.activeRecord.meter_number,
                   rules: [
                     {
                       required: true,
@@ -287,7 +333,8 @@ class ConsumersForm extends React.Component {
 
 function mapStateToProps(state){
   return {
-    consumers:state.consumers
+    consumers:state.consumers,
+    consumertypes:state.consumertypes
   }
 }
 

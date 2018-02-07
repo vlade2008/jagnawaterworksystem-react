@@ -54,7 +54,7 @@ export default {
 
 
         let consumertypes = null;
-        yield get('/api/consumerTypes').then(response => {
+        yield get('/api/consumer-types').then(response => {
 
            consumertypes = response.data
 
@@ -79,7 +79,7 @@ export default {
 
    deleteConsumerTypes:[function *({id, callback=null},{call,put}){
      try{
-       yield destroy(`/api/consumerTypes/${id}`).then(response => {
+       yield destroy(`/api/consumer-types/${id}`).then(response => {
 
           if(callback) callback(true);
 
@@ -93,7 +93,7 @@ export default {
 
     upsertConsumerTypes:[function *({payload,callback = null},{call,put}){
       try{
-        yield post('/api/consumerTypes',payload).then(response => {
+        yield post('/api/consumer-types',payload).then(response => {
 
            if(callback) callback(true);
 
@@ -107,7 +107,7 @@ export default {
 
     updateConsumerTypes:[function *({payload,callback = null},{call,put}){
       try{
-        yield post(`/api/consumerTypes/${payload.id}`,payload).then(response => {
+        yield post(`/api/consumer-types/${payload.id}`,payload).then(response => {
 
            if(callback) callback(true);
 
