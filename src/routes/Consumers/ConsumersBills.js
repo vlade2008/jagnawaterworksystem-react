@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button } from 'antd';
+import { Table, Icon, Divider ,Button,List,Avatar } from 'antd';
 
 
 class ConsumersBills extends React.Component {
@@ -11,7 +11,6 @@ constructor(props){
 
 
   render() {
-
 
     const columns = [{
       title: 'Name',
@@ -58,10 +57,19 @@ constructor(props){
       age: 32,
       address: 'Sidney No. 1 Lake Park',
     }];
-    
+
 
     return (
       <div>
+
+        <List.Item>
+          <List.Item.Meta
+            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+            title={`${this.props.consumers.activeRecord.lname} , ${this.props.consumers.activeRecord.fname} , ${this.props.consumers.activeRecord.mname} `}
+            description={this.props.consumers.activeRecord.address}
+          />
+        </List.Item>
+        <Button style={{marginBottom:10}}>New Reading</Button>
         <Table columns={columns} dataSource={data} />
 
       </div>
@@ -73,7 +81,7 @@ constructor(props){
 
 function mapStateToProps(state){
   return {
-
+    consumers:state.consumers
   }
 }
 
