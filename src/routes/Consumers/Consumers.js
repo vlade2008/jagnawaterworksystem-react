@@ -39,9 +39,15 @@ getConsumers = () =>{
    })
  }
 
-onChangeUrl = url => {
+onChangeUrl = key => {
     return () => {
-      // this.props.history.push(url)
+      let id = this.props.consumers.records[key].account_no;
+      this.props.dispatch({
+          type:'consumers/updateFormInput',
+          payload:this.props.consumers.records[key],
+          callback:this.props.history.push(`/dashboard/consumers/${id}`)
+        });
+
     }
   }
 
@@ -98,18 +104,11 @@ onChangeUrl = url => {
       key: 'action',
       render: (text, record) => (
         <span>
-
+          <a onClick={this.onChangeUrl(record.key)}>View</a>
+          <Divider type="vertical" />
           <a onClick={this.onEdit(record.key)}>Edit</a>
           <Divider type="vertical" />
           <a onClick={this.onDelete(record.key)}>Delete</a>
-          {/* <a onClick={this.onChangeUrl('/dashboard/consumers/1232131')}>Action 一 {record.name}</a>
-          <a onClick={this.onChangeUrl(record)}>Action 一 {record.name}</a>
-          <Divider type="vertical" />
-          <a href="#">Delete</a>
-          <Divider type="vertical" />
-          <a href="#" className="ant-dropdown-link">
-            More actions <Icon type="down" />
-          </a> */}
         </span>
       ),
     }];
