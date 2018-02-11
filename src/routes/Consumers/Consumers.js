@@ -26,8 +26,15 @@ getConsumers = () =>{
 }
 
 
+  clearUpdateForm = () =>{
+    this.props.dispatch({
+        type:'consumers/updateFormInput',
+        payload:'clear'
+      });
+  }
 
  onOpenModal = () =>{
+   this.clearUpdateForm();
    this.setState({
      isModal:true
    })

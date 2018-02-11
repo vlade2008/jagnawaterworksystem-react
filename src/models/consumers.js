@@ -9,7 +9,9 @@ export default {
   namespace: 'consumers',
   state: {
     records:[],
-    activeRecord:{}
+    activeRecord:{},
+    monthlyRecord:[],
+    activeRecordMonthly:{}
   },
   reducers: {
 
@@ -21,6 +23,9 @@ export default {
           }
       });
     },
+
+
+
 
     getAllConsumersFailed(state,{message}){
       return {
@@ -43,6 +48,24 @@ export default {
         });
       }
     },
+
+
+
+    getAllConsumersMonthlySuccess(state,{payload}){
+      return update(state,{
+          monthlyRecord: {
+            $set: payload
+          }
+      });
+    },
+
+    getAllConsumersMonthlyFailed(state,{message}){
+      return {
+        ...state
+      }
+    },
+
+
 
 
   },
@@ -76,12 +99,10 @@ export default {
 
          })
 
-        if(!_.isEmpty(consumers)){
           yield put({
             type:"getAllConsumersSuccess",
             payload:consumers
           });
-        }
 
 
       }
@@ -110,7 +131,6 @@ export default {
 
 
     updateConsumers:[function *({payload,callback = null},{call,put}){
-      console.log('meng sud siya ane');
       try{
         yield post(`/api/consumers/${payload.account_no}`,payload).then(response => {
 
@@ -128,6 +148,38 @@ export default {
     *updateFormInput({payload},{call,put}){
       yield put({ type: 'updateFormInputSuccess', payload});
     },
+
+
+    // monthly record consumers
+
+    getAllConsumersMonthly:[function *({id},{call,put}){
+      try{
+
+
+        let consumers = null;
+        yield get(`/api/monthly-bills/account/${id}`).then(response => {
+
+           consumers = response.data
+
+         })
+
+          yield put({
+            type:"getAllConsumersMonthlySuccess",
+            payload:consumers
+          });
+
+
+      }
+      catch (error){
+
+        yield put({ type: 'getAllConsumersMonthlyFailed'});
+
+      }
+   },{type: 'takeLatest'}],
+
+
+
+
 
   },
   subscriptions: {},
