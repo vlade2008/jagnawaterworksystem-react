@@ -23,6 +23,9 @@ import Users from './routes/Users/Users'
 //department
 import ConsumerTypes from './routes/ConsumerTypes/ConsumerTypes'
 
+//settings
+import Settings from './routes/Settings/Settings';
+
 function RouterConfig({ history }) {
 
 const routes = [
@@ -75,14 +78,9 @@ const routes = [
                   component:ConsumersBills,
                 },
                 {
-                  path:'/dashboard/users',
+                  path:'/dashboard/settings',
                   exact:true,
-                  component:Users
-                },
-                {
-                  path:'/dashboard/consumertypes',
-                  exact:true,
-                  component:ConsumerTypes
+                  component:Settings
                 },
               ]
             }

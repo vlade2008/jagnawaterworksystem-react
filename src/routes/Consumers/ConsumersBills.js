@@ -89,6 +89,11 @@ onCloseModal = (name) =>{
       key: 'current_reading',
     },
     {
+      title:'Due Date',
+      dataIndex:'due_date',
+      key:'due_date'
+    },
+    {
      title: 'Amount',
      dataIndex: 'net_amount',
      key: 'net_amount',
