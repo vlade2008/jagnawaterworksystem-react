@@ -23,7 +23,7 @@ class PaymentForm extends React.Component {
        if (!err) {
 
          values.account_no = this.props.account_no
-         values.bill_no = this.props.consumers.monthlyRecord[0].id;
+         values.bill_no = this.props.bill_no
          values.payment_date = moment()
          values.or_date = moment()
 
@@ -47,6 +47,7 @@ class PaymentForm extends React.Component {
           this.props.onCloseAllModal('isPaymentModal');
           this.props.getConsumersMonthly()
           this.props.getPayments()
+          this.props.getUnpaid()
         }
       });
     }else{

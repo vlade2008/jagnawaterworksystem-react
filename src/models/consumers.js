@@ -87,7 +87,7 @@ export default {
      },{type: 'takeLatest'}],
 
 
-    getAllConsumers:[function *({},{call,put}){
+    getAllConsumers:[function *({callback = null},{call,put}){
       try{
 
 
@@ -96,8 +96,11 @@ export default {
 
            consumers = response.data
 
-
+           if (callback) {
+             callback(consumers);
+           }
          })
+
 
           yield put({
             type:"getAllConsumersSuccess",
@@ -147,6 +150,10 @@ export default {
 
     *updateFormInput({payload},{call,put}){
       yield put({ type: 'updateFormInputSuccess', payload});
+    },
+
+    *updateRecord({payload},{call,put}){
+      yield put({ type: 'getAllConsumersSuccess', payload});
     },
 
 

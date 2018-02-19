@@ -52,6 +52,7 @@ class ReadingForm extends React.Component {
           this.props.onCloseAllModal('isReadingModal');
           this.props.getReading()
           this.props.getConsumersMonthly()
+          this.props.getUnpaid()
         }
       });
     }else{
@@ -120,7 +121,7 @@ class ReadingForm extends React.Component {
                 {getFieldDecorator('meter_number', {
                   rules: [
                     {
-                      required: true,
+                      required: false,
                       message: 'Meter Number'
                     },
                   ],

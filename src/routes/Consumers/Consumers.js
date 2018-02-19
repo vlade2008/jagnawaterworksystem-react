@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,Modal } from 'antd';
+import { Table, Icon, Divider ,Button,Modal,Input } from 'antd';
 
 import ConsumersForm from './ConsumersForm'
 
@@ -10,19 +10,25 @@ constructor(props){
   super(props);
 
   this.state = {
-    isModal:false
+    isModal:false,
+    filterDropdownVisible: false,
+    searchText: '',
+    filtered: false,
+    userlevel: localStorage.getItem('userlevel')
   }
 
 }
 
-componentWillMount() {
+componentDidMount() {
     this.getConsumers();
+
   }
 
 getConsumers = () =>{
   this.props.dispatch({
       type:'consumers/getAllConsumers'
     });
+
 }
 
 
@@ -96,26 +102,95 @@ onChangeUrl = key => {
     }
   }
 
+  onInputChange = (e) => {
+    this.setState({ searchText: e.target.value });
+  }
+
+  onSearch = () => {
+    const { searchText } = this.state;
+    if (_.isEmpty(searchText)) {
+      this.getConsumers();
+    }else {
+      const reg = new RegExp(searchText, 'gi');
+      this.setState({
+          filterDropdownVisible: false,
+          filtered: !!searchText,
+        });
+
+        let data = this.props.consumers.records.map((record) => {
+          const match = record.lname.match(reg);
+          if (!match) {
+            return null;
+          }
+          return {
+            ...record
+          };
+        }).filter(record => !!record)
+
+        this.props.dispatch({
+          type:'consumers/updateRecord',
+          payload:data
+        })
+    }
+
+  }
 
   render() {
 
 
 
-    const columns = [{
-      title: 'Last Name',
-      dataIndex: 'lname',
-      key: 'name',
-      render: text => <a href="#">{text}</a>,
-    }, {
+    const columns = [
+      {
+        title: 'Last Name',
+        dataIndex: 'lname',
+        key: 'lname',
+        filterDropdown: (
+        <div className="custom-filter-dropdown">
+          <Input
+            ref={ele => this.searchInput = ele}
+            placeholder="Search name"
+            value={this.state.searchText}
+            onChange={this.onInputChange}
+            onPressEnter={this.onSearch}
+          />
+          <Button type="primary" onClick={this.onSearch}>Search</Button>
+        </div>
+      ),
+      filterIcon: <Icon type="filter" style={{ color: this.state.filtered ? '#108ee9' : '#aaa' }} />,
+      filterDropdownVisible: this.state.filterDropdownVisible,
+      onFilterDropdownVisibleChange: (visible) => {
+        this.setState({
+          filterDropdownVisible: visible,
+        }, () => this.searchInput && this.searchInput.focus());
+      },
+      },
+      {
+        title: ' First Name',
+        dataIndex: 'fname',
+        key: 'fname',
+      },
+      {
+        title: 'Middle Name',
+        dataIndex: 'mname',
+        key: 'mname',
+      },
+      {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
         <span>
           <a onClick={this.onChangeUrl(record.key)}>View</a>
           <Divider type="vertical" />
-          <a onClick={this.onEdit(record.key)}>Edit</a>
-          <Divider type="vertical" />
-          <a onClick={this.onDelete(record.key)}>Delete</a>
+          {
+            this.state.userlevel === 'admin' ? (
+              <span>
+                <a onClick={this.onEdit(record.key)}>Edit</a>
+                <Divider type="vertical" />
+                <a onClick={this.onDelete(record.key)}>Delete</a>
+              </span>
+            ): null
+          }
+
         </span>
       ),
     }];
@@ -127,7 +202,12 @@ onChangeUrl = key => {
 
     return (
       <div>
-        <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Consumers</Button>
+        {
+          this.state.userlevel === 'admin' ? (
+            <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Consumers</Button>
+          ) : null
+        }
+
         <Table columns={columns} dataSource={data} />
 
 

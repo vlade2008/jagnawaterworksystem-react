@@ -65,7 +65,6 @@ export default {
             api_key:account.api_key,
             isLogin:account.error
           });
-          console.log("success login")
           localStorage.setItem('api_key',account.api_key)
           localStorage.setItem('userlevel',account.user.userlevel)
           localStorage.setItem('authID',account.user.id)

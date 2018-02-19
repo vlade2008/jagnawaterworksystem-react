@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router } from 'dva/router';
+import {adminOnly} from './utils/AuthComponent';
 import RouteWithSubRoutes from './routes/RouteWithSubRoutes';
 import App from './components/App';
 import Main from './components/Main';
@@ -16,6 +17,9 @@ import Dashboard from './routes/Dashboard/Dashboard'
 import Consumers from './routes/Consumers/Consumers'
 import ConsumersBills from './routes/Consumers/ConsumersBills'
 
+//Print
+import StatementAccounts from './routes/Printing/StatementAccounts'
+import Monthlybillprint from './routes/Printing/Monthlybillprint'
 
 //users
 import Users from './routes/Users/Users'
@@ -80,8 +84,18 @@ const routes = [
                 {
                   path:'/dashboard/settings',
                   exact:true,
-                  component:Settings
+                  component:adminOnly(Settings)
                 },
+                {
+                  path:'/dashboard/statementaccounts',
+                  exact:true,
+                  component:StatementAccounts
+                },
+                {
+                  path:'/dashboard/monthlybill',
+                  exact:true,
+                  component:Monthlybillprint
+                }
               ]
             }
           ]

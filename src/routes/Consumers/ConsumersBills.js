@@ -12,7 +12,8 @@ constructor(props){
   super(props);
 
   this.state = {
-    isModal:false
+    isModal:false,
+    bill_no:''
   }
 }
 
@@ -42,6 +43,8 @@ onCloseModal = (name) =>{
   componentWillMount(){
       this.getConsumersMonthly();
       this.getReading();
+      this.getPayments()
+      this.getUnpaid()
   }
 
   getReading = () =>{
@@ -64,6 +67,23 @@ onCloseModal = (name) =>{
         id:this.props.match.params.id
       });
   }
+
+  getUnpaid = () =>{
+    this.props.dispatch({
+        type:'unpaid/getAllUnpaid',
+        id:this.props.match.params.id
+      });
+  }
+
+  onPay = key => {
+      return () => {
+        let bill_no = this.props.unpaid.records[key].bill_no;
+        this.setState({
+          bill_no:bill_no,
+          isPaymentModal:true
+        })
+      }
+    }
 
   render() {
 
@@ -164,6 +184,46 @@ onCloseModal = (name) =>{
 ];
 
 
+  let dataUnpaid = _.map(this.props.unpaid.records,(item,i)=>{
+    item.key = i
+    return item
+  })
+
+
+  const columnsUnpaid = [{
+        title: 'Bill No',
+        dataIndex: 'bill_no',
+        key: 'bill_no',
+      }, {
+        title: 'Previous Reading',
+        dataIndex: 'previous_reading',
+        key: 'previous_reading',
+      }, {
+        title: 'Current Reading',
+        dataIndex: 'current_reading',
+        key: 'current_reading',
+      },
+      {
+        title:'Due Date',
+        dataIndex:'due_date',
+        key:'due_date'
+      },
+      {
+       title: 'Amount',
+       dataIndex: 'net_amount',
+       key: 'net_amount',
+     },
+      {
+       title: 'Action',
+       key: 'action',
+       render: (text, record) => (
+         <span>
+           <a onClick={this.onPay(record.key)}>pay</a>
+         </span>
+       ),
+     }
+    ];
+
     let isBill = !_.isEmpty(this.props.consumers.monthlyRecord) ? true : false
 
 
@@ -178,11 +238,7 @@ onCloseModal = (name) =>{
           />
         </List.Item>
         <Button style={{marginBottom:10}} onClick={this.onOpenModal('isReadingModal')}>New Reading</Button>
-        {
-          isBill ? (
-            <Button style={{marginBottom:10}} onClick={this.onOpenModal('isPaymentModal')} >Payment</Button>
-          ): null
-        }
+
 
 
         <Tabs defaultActiveKey="1" >
@@ -192,21 +248,25 @@ onCloseModal = (name) =>{
           <TabPane tab="Monthly Bills" key="2">
             <Table columns={columnsMonthly} dataSource={dataMonthly} />
           </TabPane>
-          <TabPane tab="Payment" key="3">
+          <TabPane tab="Unpaid" key="3">
+            <Table columns={columnsUnpaid} dataSource={dataUnpaid} />
+          </TabPane>
+          <TabPane tab="Payment" key="4">
             <Table columns={columnsPayments} dataSource={dataPayments} />
           </TabPane>
+
         </Tabs>
 
 
         {
           this.state.isReadingModal ?(
-            <ReadingForm isModal={this.state.isReadingModal} onCloseModal={this.onCloseModal} getReading={this.getReading} account_no={this.props.match.params.id} onCloseAllModal={this.onCloseAllModal} getConsumersMonthly={this.getConsumersMonthly}  />
+            <ReadingForm isModal={this.state.isReadingModal} onCloseModal={this.onCloseModal} getReading={this.getReading} account_no={this.props.match.params.id} onCloseAllModal={this.onCloseAllModal} getConsumersMonthly={this.getConsumersMonthly} getUnpaid={this.getUnpaid}  />
           ):null
         }
 
         {
           this.state.isPaymentModal ?(
-            <PaymentForm isModal={this.state.isPaymentModal} onCloseModal={this.onCloseModal} getConsumersMonthly={this.getConsumersMonthly} getPayments={this.getPayments} account_no={this.props.match.params.id} onCloseAllModal={this.onCloseAllModal}  />
+            <PaymentForm bill_no={this.state.bill_no}  isModal={this.state.isPaymentModal} onCloseModal={this.onCloseModal} getConsumersMonthly={this.getConsumersMonthly} getPayments={this.getPayments} account_no={this.props.match.params.id} onCloseAllModal={this.onCloseAllModal} getUnpaid={this.getUnpaid}  />
           ):null
         }
 
@@ -222,7 +282,8 @@ function mapStateToProps(state){
   return {
     consumers:state.consumers,
     reading:state.reading,
-    payments:state.payments
+    payments:state.payments,
+    unpaid:state.unpaid
   }
 }
 

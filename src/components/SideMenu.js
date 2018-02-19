@@ -9,6 +9,7 @@ const SideMenu = (props) => {
   let path = props.pathName;
   let keys = props.pathName.split('/').pop();
   let subs = props.pathName.split('/')[2];
+  let userlevel = localStorage.getItem('userlevel')
 
   return (
     <Layout.Sider style={{backgroundColor:'white'}}>
@@ -24,25 +25,24 @@ const SideMenu = (props) => {
         <Menu.Item key="2">
           <Link to={'/dashboard/consumers'}>Consumers</Link>
         </Menu.Item>
-        <Menu.Item key="3">
-          <Link to={'/dashboard/payment'}>Payment</Link>
-        </Menu.Item>
-
-
-          <Menu.SubMenu key="sub1" title={<span><Icon type="appstore" /><span>Bills</span></span>}>
+          <Menu.SubMenu key="sub1" title={<span><Icon type="appstore" /><span>Print</span></span>}>
             <Menu.Item key="6">
-              <Link to={'/dashboard/paidbills'}>Paid Bills</Link>
+              <Link to={'/dashboard/statementaccounts'}>Statement of Accounts</Link>
             </Menu.Item>
             <Menu.Item key="7">
-              <Link to={'/dashboard/unpaid-biils'}>Unpaid Bills</Link>
+              <Link to={'/dashboard/monthlybill'}>Monthly Bill</Link>
             </Menu.Item>
 
           </Menu.SubMenu>
 
+          {
+            userlevel === 'admin' ? (
+              <Menu.Item key="8">
+                <Link to={'/dashboard/settings'}>Settings</Link>
+              </Menu.Item>
+            ): null
+          }
 
-          <Menu.Item key="8">
-            <Link to={'/dashboard/settings'}>Settings</Link>
-          </Menu.Item>
 
           {/* <Menu.Item key="8">
             <Link to={'/dashboard/users'}>Users</Link>

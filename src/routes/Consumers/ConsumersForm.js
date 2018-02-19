@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { connect } from 'dva';
-import { Button, Form, Input,DatePicker,Select,InputNumber,Modal } from 'antd'
+import { Button, Form, Input,DatePicker,Select,InputNumber,Modal,Upload,Icon,message } from 'antd'
 const FormItem = Form.Item;
 const Option = Select.Option
 import moment from 'moment'
@@ -31,22 +31,46 @@ class ConsumersForm extends React.Component {
     e.preventDefault();
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
-         if (this.props.consumers.activeRecord.account_no) {
-           values.account_no = this.props.consumers.activeRecord.account_no
-           this.props.dispatch({
-             type:'consumers/updateConsumers',
-             payload: values,
-             callback: this.getResult
-           });
+
+         if (values.picture) {
+           if (values.picture[0].size <= 200827) {
+
+             values.picture = values.picture[0].thumbUrl
+
+             this.onsuccess(values)
+
+
+           }else {
+              message.error('Reduce large image sizes. (200kb allow)');
+           }
+
          }else {
-           this.props.dispatch({
-             type:'consumers/upsertConsumers',
-             payload: values,
-             callback: this.getResult
-           });
+           delete values.picture
+           this.onsuccess(values)
          }
+
+
+
+
        }
      });
+  }
+
+  onsuccess = (values) =>{
+    if (this.props.consumers.activeRecord.account_no) {
+      values.account_no = this.props.consumers.activeRecord.account_no
+      this.props.dispatch({
+        type:'consumers/updateConsumers',
+        payload: values,
+        callback: this.getResult
+      });
+    }else {
+      this.props.dispatch({
+        type:'consumers/upsertConsumers',
+        payload: values,
+        callback: this.getResult
+      });
+    }
   }
 
   getResult = (isSuccess,error) => {
@@ -66,6 +90,15 @@ class ConsumersForm extends React.Component {
         content: `Record failed to save! ${error}`
       });
     }
+  }
+
+
+  normFile = (e) => {
+    if (Array.isArray(e)) {
+      console.log(e);
+      return e;
+    }
+    return e && e.fileList;
   }
 
 
@@ -312,6 +345,27 @@ class ConsumersForm extends React.Component {
                   <Input size="large" type="number" placeholder="Meter Number" />
                 )}
               </FormItem>
+
+
+              <FormItem hasFeedback >
+                  {getFieldDecorator('picture', {
+                    valuePropName: 'fileList',
+                    getValueFromEvent: this.normFile,
+                    rules: [
+                      {
+                        required: false,
+                        message: 'Picture'
+                      },
+                    ],
+                  })(
+                    <Upload  listType="picture">
+                      <Button>
+                        <Icon type="upload" /> Click to upload
+                      </Button>
+                    </Upload>
+                  )}
+                </FormItem>
+
 
 
 
