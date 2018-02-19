@@ -29,6 +29,8 @@ class ReadingForm extends React.Component {
          let authID = localStorage.getItem('authID')
          values.account_no = this.props.account_no
          values.read_by = authID
+         values.status = true;
+         values.reading_date = moment(values.reading_date).format('YYYY/MM/DD')
 
          this.props.dispatch({
            type:'reading/upsertReading',
