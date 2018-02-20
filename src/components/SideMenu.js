@@ -12,7 +12,7 @@ const SideMenu = (props) => {
   let userlevel = localStorage.getItem('userlevel')
 
   return (
-    <Layout.Sider style={{backgroundColor:'white'}}>
+    <Layout.Sider  style={{backgroundColor:'white'}}>
       <Menu mode="inline"
         theme="light"
         selectedKeys={[keys]}

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,Modal,Input } from 'antd';
+import { Table, Icon, Divider ,Button,Modal,Input,Avatar } from 'antd';
 
 import ConsumersForm from './ConsumersForm'
 
@@ -140,6 +140,22 @@ onChangeUrl = key => {
 
 
     const columns = [
+        {
+        title: 'Picture',
+        key: 'picture',
+        render: (text, record) => (
+          <span>
+            {
+              this.props.consumers.records[record.key].haspicture ? (
+                <img size="large" src={`/userApi/consumers/${this.props.consumers.records[record.key].account_no}/picture`} />
+              ):(
+                <Avatar size="large" icon="user" />
+              )
+            }
+
+          </span>
+        ),
+      },
       {
         title: 'Last Name',
         dataIndex: 'lname',

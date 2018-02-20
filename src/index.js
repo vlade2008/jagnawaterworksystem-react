@@ -36,6 +36,7 @@ app.model(require('./models/reading'))
 app.model(require('./models/payments'))
 app.model(require('./models/due'))
 app.model(require('./models/unpaid'))
+app.model(require('./models/report'))
 
 // 4. Router
 app.router(require('./router'));
