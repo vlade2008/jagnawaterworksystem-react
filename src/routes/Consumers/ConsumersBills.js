@@ -6,6 +6,7 @@ import ReadingForm from './ReadingForm'
 import PaymentForm from './PaymentForm'
 const TabPane = Tabs.TabPane
 
+import {baseURL} from '../../rest/rest'
 
 class ConsumersBills extends React.Component {
 constructor(props){
@@ -232,7 +233,14 @@ onCloseModal = (name) =>{
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+            avatar={
+              this.props.consumers.activeRecord.haspicture ? (
+                  <Avatar size="large" src={baseURL+"/userApi/consumers/" + this.props.consumers.activeRecord.account_no+ "/picture"} />
+              ): (
+                <Avatar size="large" icon="user" />
+              )
+
+            }
             title={`${this.props.consumers.activeRecord.lname} , ${this.props.consumers.activeRecord.fname} , ${this.props.consumers.activeRecord.mname} `}
             description={this.props.consumers.activeRecord.address}
           />

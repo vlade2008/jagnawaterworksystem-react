@@ -25,6 +25,10 @@ class ConsumersForm extends React.Component {
       });
   }
 
+  removeBase64Prefix = (strVal) => {
+      var newStr = _.replace(strVal, "data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+      return newStr;
+  }
 
 
   handleSubmit = (e) =>{
@@ -35,7 +39,7 @@ class ConsumersForm extends React.Component {
          if (values.picture) {
            if (values.picture[0].size <= 200827) {
 
-             values.picture = values.picture[0].thumbUrl
+             values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
 
              this.onsuccess(values)
 
@@ -212,6 +216,18 @@ class ConsumersForm extends React.Component {
                     },
                   ],
                 })(<DatePicker format={dateFormat}  placeholder="Birth Date" />)}
+              </FormItem>
+
+              <FormItem hasFeedback>
+                {getFieldDecorator('contact_no', {
+                  initialValue:this.props.consumers.activeRecord.contact_no,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Contact No',
+                    },
+                  ],
+                })(<Input size="large"  placeholder="Contact No" />)}
               </FormItem>
 
               {/* <FormItem hasFeedback>

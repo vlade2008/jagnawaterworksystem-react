@@ -6,14 +6,14 @@ import {get,getLogin,post,destroy} from '../rest/rest'
 import update from 'react-addons-update';
 
 export default {
-  namespace: 'report',
+  namespace: 'inquiry',
   state: {
     records:[],
     activeRecord:{}
   },
   reducers: {
 
-    getAllReportSuccess(state,{payload}){
+    getAllInquirySuccess(state,{payload}){
       return update(state,{
           records: {
             $set: payload
@@ -22,9 +22,11 @@ export default {
     },
 
 
-    getAllReportFailed(state,{message}){
+    getAllInquiryFailed(state,{message}){
       return {
-        ...state
+        activeRecord: {
+          $set: {}
+        }
       }
     },
 
@@ -51,33 +53,35 @@ export default {
   effects: {
 
 
-    getAllReport:[function *({payload},{call,put}){
+    getAllInquiry:[function *({payload},{call,put}){
       try{
 
 
-        let report = null;
-        yield get('/api/monthly-bills-report',{
+        let inquiry = null;
+        yield get('/userApi/inquiry/monthly-bills/unpaid/account',{
           params:{
-            startDate:payload.startDate,
-            endDate:payload.endDate
+            lname:payload.lname,
+            mname:payload.mname,
+            fname:payload.fname,
+            account_no:payload.account_no
           }
         }).then(response => {
 
-           report = response.data
+           inquiry = response.data
 
 
          })
 
           yield put({
-            type:"getAllReportSuccess",
-            payload:report
+            type:"updateFormInputSuccess",
+            payload:inquiry
           });
 
 
       }
       catch (error){
         console.log(error,'error');
-        yield put({ type: 'getAllReportFailed'});
+        yield put({ type: 'updateFormInputSuccess',payload:'clear'});
 
       }
    },{type: 'takeLatest'}],

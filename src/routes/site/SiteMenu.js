@@ -90,7 +90,7 @@ render(){
                          {islogin?
                            <Dropdown overlay={content}>
                              <a className="ant-dropdown-link" href="">
-                               <Avatar style={{lineHeight: '64px',verticalAlign: 'middle',marginRight:'10px'}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                               <Avatar style={{verticalAlign: 'middle'}} icon="user" />
                                <Icon type="down" />
                              </a>
                            </Dropdown>

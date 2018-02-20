@@ -1,12 +1,22 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table,Button } from 'antd';
+import { Table,Button,DatePicker,Icon } from 'antd';
 import moment from 'moment'
+const { RangePicker } = DatePicker;
+
+
 
 class Monthlybillprint extends React.Component {
 constructor(props){
   super(props);
+
+  this.state = {
+    value:[
+           moment().startOf('month'),
+           moment().endOf('month')
+         ]
+  }
 }
 
 
@@ -16,11 +26,31 @@ constructor(props){
   }
 
   getAllReport = () =>{
+    let payload = {};
+    payload.startDate = this.state.value[0].startOf('day').toISOString()
+    payload.endDate = this.state.value[1].endOf('day').toISOString();
+
     this.props.dispatch({
-        type:'report/getAllReport'
+        type:'report/getAllReport',
+        payload:payload
       });
 
   }
+
+
+
+  onRefresh = () =>{
+    this.getAllReport();
+  }
+
+  onHandlePicker = (value,datestring) => {
+
+       this.setState({
+         value
+       },()=>{
+         this.getAllReport();
+       })
+     }
 
 
 
@@ -41,6 +71,13 @@ onPrint = () =>{
   render() {
     return (
       <div>
+        <RangePicker
+          format={"MM-DD-YYYY"}
+          value={this.state.value}
+          onChange={this.onHandlePicker}
+        />
+        <Button style={{marginLeft:5}} type="primary"   onClick={this.onRefresh}><Icon type="reload" /></Button>
+        <br/>
         <Button onClick={this.onPrint}>
            Print
          </Button>

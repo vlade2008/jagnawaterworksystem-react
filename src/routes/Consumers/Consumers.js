@@ -5,6 +5,8 @@ import { Table, Icon, Divider ,Button,Modal,Input,Avatar } from 'antd';
 
 import ConsumersForm from './ConsumersForm'
 
+import {baseURL} from '../../rest/rest'
+
 class Consumers extends React.Component {
 constructor(props){
   super(props);
@@ -135,6 +137,9 @@ onChangeUrl = key => {
 
   }
 
+
+
+
   render() {
 
 
@@ -147,7 +152,7 @@ onChangeUrl = key => {
           <span>
             {
               this.props.consumers.records[record.key].haspicture ? (
-                <img size="large" src={`/userApi/consumers/${this.props.consumers.records[record.key].account_no}/picture`} />
+                <Avatar size="large" src={baseURL+"/userApi/consumers/" + this.props.consumers.records[record.key].account_no+ "/picture"} />
               ):(
                 <Avatar size="large" icon="user" />
               )
