@@ -42,5 +42,5 @@ app.model(require('./models/inquiry'))
 // 4. Router
 app.router(require('./router'));
 
-// 5. Start
+// 5. Start notes 
 app.start('#root');
