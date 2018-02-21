@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,Modal,Input,Avatar } from 'antd';
-
+import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card } from 'antd';
+const { Meta } = Card;
 import ConsumersForm from './ConsumersForm'
 
 import {baseURL} from '../../rest/rest'
@@ -137,6 +137,19 @@ onChangeUrl = key => {
 
   }
 
+  printID = (key) =>{
+    return ()=>{
+
+      const printContents = document.getElementById("consumerID"+this.props.consumers.records[key].account_no).innerHTML;
+      const originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents;
+
+      window.print();
+      document.body.innerHTML = originalContents;
+
+    }
+  }
 
 
 
@@ -208,6 +221,8 @@ onChangeUrl = key => {
                 <a onClick={this.onEdit(record.key)}>Edit</a>
                 <Divider type="vertical" />
                 <a onClick={this.onDelete(record.key)}>Delete</a>
+                <Divider type="vertical" />
+                <a onClick={this.printID(record.key)}>Print ID</a>
               </span>
             ): null
           }
@@ -220,6 +235,9 @@ onChangeUrl = key => {
       item.key = i
       return item
     })
+
+
+    let consumersID = this.props.consumers.records
 
     return (
       <div>
@@ -237,6 +255,35 @@ onChangeUrl = key => {
             <ConsumersForm isModal={this.state.isModal} onCloseModal={this.onCloseModal} getConsumers={this.getConsumers} />
           ):null
         }
+
+        {
+          this.props.consumers.records.map((item,i)=>{
+            return(
+              <div id={"consumerID"+item.account_no} key={i} style={{display:'none'}}>
+                <Card
+                  hoverable
+                  style={{ width: 200 }}
+                  cover={
+                    <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/picture"}  />
+                  }
+                >
+                  <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/signature"} width={150}  />
+                  <Meta title={item.lname + " " + item.fname + " " + item.mname}/>
+
+
+
+                </Card>
+
+
+
+              </div>
+            )
+          })
+        }
+
+
+
+
 
       </div>
     )

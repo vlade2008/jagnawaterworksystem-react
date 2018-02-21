@@ -2,7 +2,8 @@
 import React from 'react';
 
 import { connect } from 'dva';
-import { Button, Form, Input,DatePicker,Select,InputNumber,Modal,Upload,Icon,message } from 'antd'
+import { Button, Form, Input,DatePicker,Select,InputNumber,Modal,Upload,Icon,message,Card } from 'antd'
+import SignatureCanvas from 'react-signature-canvas'
 const FormItem = Form.Item;
 const Option = Select.Option
 import moment from 'moment'
@@ -36,12 +37,20 @@ class ConsumersForm extends React.Component {
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
 
-         if (values.picture) {
+
+         if (values.picture ) {
            if (values.picture[0].size <= 200827) {
+              values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
+             if (!this.sigCanvas.isEmpty()) {
+               let signature  = this.sigCanvas.getCanvas().toDataURL()
+               values.signature_of_member = this.removeBase64Prefix(signature)
+               this.onsuccess(values)
+             }else {
+               values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
+               this.onsuccess(values)
+             }
 
-             values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
 
-             this.onsuccess(values)
 
 
            }else {
@@ -52,6 +61,7 @@ class ConsumersForm extends React.Component {
            delete values.picture
            this.onsuccess(values)
          }
+
 
 
 
@@ -106,6 +116,10 @@ class ConsumersForm extends React.Component {
   }
 
 
+  onClearSignature = () =>{
+    this.sigCanvas.clear()
+  }
+
 
   render() {
 
@@ -126,7 +140,8 @@ class ConsumersForm extends React.Component {
     return (
 
       <Modal
-          style={{ width: '100%',top:20 }}
+          width={700}
+          style={{backgroundColor:'gray'}}
           title="New Form"
           visible={this.props.isModal}
           onCancel={this.props.onCloseModal}
@@ -230,80 +245,7 @@ class ConsumersForm extends React.Component {
                 })(<Input size="large"  placeholder="Contact No" />)}
               </FormItem>
 
-              {/* <FormItem hasFeedback>
-                {getFieldDecorator('municipality', {
-                  initialValue:this.props.consumers.activeRecord.municipality,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Municipaliry',
-                    },
-                  ],
-                })(<Input size="large" placeholder="Municipaliry" />)}
-              </FormItem>
 
-              <FormItem hasFeedback>
-                {getFieldDecorator('barangay', {
-                  initialValue:this.props.consumers.activeRecord.barangay,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Barangay',
-                    },
-                  ],
-                })(<Input size="large" placeholder="Barangay" />)}
-              </FormItem>
-
-              <FormItem hasFeedback>
-                {getFieldDecorator('citizenship', {
-                  initialValue:this.props.consumers.activeRecord.citizenship,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Citizenship',
-                    },
-                  ],
-                })(<Input size="large" placeholder="Citizenship" />)}
-              </FormItem> */}
-
-
-              {/* <FormItem hasFeedback>
-                {getFieldDecorator('orno_appfee', {
-                  initialValue:this.props.consumers.activeRecord.orno_appfee,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'OR NO',
-                    },
-                  ],
-                })(<Input size="large" placeholder="OR NO" />)}
-              </FormItem> */}
-
-
-              {/* <FormItem hasFeedback >
-                {getFieldDecorator('application_date', {
-                  initialValue:this.props.consumers.activeRecord.application_date,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Application Date',
-                    },
-                  ],
-                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" placeholder="Application Date" />)}
-              </FormItem> */}
-
-              {/* <FormItem hasFeedback>
-                {getFieldDecorator('appfee', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'App Fee'
-                    },
-                  ],
-                })(
-                  <Input size="large" type="number" placeholder="App Fee" />
-                )}
-              </FormItem> */}
 
 
               <FormItem hasFeedback>
@@ -335,19 +277,6 @@ class ConsumersForm extends React.Component {
                 )}
               </FormItem>
 
-
-              {/* <FormItem hasFeedback >
-                {getFieldDecorator('connection_date', {
-                  initialValue:this.props.consumers.activeRecord.connection_date,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Connection Date',
-                    },
-                  ],
-                })(<DatePicker showTime format="YYYY-MM-DD HH:mm:ss"  placeholder="Connection Date"/>)}
-              </FormItem> */}
-
               <FormItem hasFeedback>
                 {getFieldDecorator('meter_number', {
                   initialValue:this.props.consumers.activeRecord.meter_number,
@@ -369,7 +298,7 @@ class ConsumersForm extends React.Component {
                     getValueFromEvent: this.normFile,
                     rules: [
                       {
-                        required: false,
+                        required: this.props.consumers.activeRecord.account_no ? false : true,
                         message: 'Picture'
                       },
                     ],
@@ -383,8 +312,13 @@ class ConsumersForm extends React.Component {
                 </FormItem>
 
 
-
-
+                <FormItem>
+                  <h3>Signature</h3>
+                  <Card>
+                    <SignatureCanvas ref={(ref)=>{this.sigCanvas = ref}} canvasProps={{width: 500, height: 200}} />
+                    <Button onClick={this.onClearSignature}>Clear</Button>
+                  </Card>
+                </FormItem>
 
 
               <FormItem key="3">

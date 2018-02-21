@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-export const baseURL = 'http://192.168.1.12:8080'
+export const baseURL = 'http://192.168.7.17:8080'
 
 
 
