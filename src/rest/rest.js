@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-export const baseURL = 'http://192.168.7.17:8080'
+export const baseURL = 'http://192.168.1.12:8080'
 
 
 
@@ -14,6 +14,22 @@ export const instance = () =>{
   let instance = axios.create({
     baseURL: baseURL,
     timeout: 1000,
+    headers:{
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Authorization': api_key ? api_key : ''
+    }
+  })
+  return instance
+
+}
+
+
+export const instanceSMS = () =>{
+
+  let api_key = localStorage.getItem('api_key')
+  let instance = axios.create({
+    baseURL: baseURL,
+    timeout: 80000,
     headers:{
       'Content-Type': 'application/json;charset=UTF-8',
       'Authorization': api_key ? api_key : ''
@@ -38,4 +54,8 @@ export const put = (path,body, config) => {
 
 export const destroy = (path, config) => {
   return instance().delete(path, config)
+}
+
+export const getTimeout = (path,config) =>{
+  return instanceSMS().get(path,config)
 }

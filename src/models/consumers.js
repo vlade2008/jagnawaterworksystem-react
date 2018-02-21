@@ -1,6 +1,6 @@
 import {withRouter,routerRedux} from 'dva/router'
 
-import {get,getLogin,post,destroy} from '../rest/rest'
+import {get,getLogin,post,destroy,getTimeout} from '../rest/rest'
 
 
 import update from 'react-addons-update';
@@ -132,6 +132,20 @@ export default {
 
     },{type: 'takeLatest'}],
 
+    sendSmsnsumers:[function *({payload,callback = null},{call,put}){
+      try{
+        yield getTimeout('/api/send-sms-to-all-for-current-bill').then(response => {
+
+           if(callback) callback(true);
+
+         })
+      }
+      catch (error){
+        if(callback) callback(false,error);
+      }
+
+    },{type: 'takeLatest'}],
+
 
     updateConsumers:[function *({payload,callback = null},{call,put}){
       try{
@@ -155,7 +169,6 @@ export default {
     *updateRecord({payload},{call,put}){
       yield put({ type: 'getAllConsumersSuccess', payload});
     },
-
 
     // monthly record consumers
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card } from 'antd';
+import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card ,message} from 'antd';
 const { Meta } = Card;
 import ConsumersForm from './ConsumersForm'
 
@@ -16,7 +16,8 @@ constructor(props){
     filterDropdownVisible: false,
     searchText: '',
     filtered: false,
-    userlevel: localStorage.getItem('userlevel')
+    userlevel: localStorage.getItem('userlevel'),
+    smsLoading:false
   }
 
 }
@@ -152,6 +153,33 @@ onChangeUrl = key => {
   }
 
 
+  onSumbitMonthlySms = () =>{
+
+    message.loading('Sending Message..', 80000);
+    this.props.dispatch({
+      type:'consumers/sendSmsnsumers',
+      callback:this.resultSms
+    })
+  }
+
+  resultSms = (isSuccess,error) => {
+    message.destroy()
+    let modalDialog = null
+    if(isSuccess){
+      modalDialog = Modal.success({
+        title: 'Success',
+        content: 'SMS send!',
+        onOk: () => {console.log('success')
+        }
+      });
+    }else{
+      modalDialog = Modal.error({
+        title: 'Failed',
+        content: `Record failed to save! ${error}`
+      });
+    }
+  }
+
 
   render() {
 
@@ -241,11 +269,19 @@ onChangeUrl = key => {
 
     return (
       <div>
+
         {
           this.state.userlevel === 'admin' ? (
             <Button onClick={this.onOpenModal} style={{marginBottom:10}}>New Consumers</Button>
           ) : null
         }
+
+        {
+          this.state.userlevel === 'admin' ? (
+            <Button onClick={this.onSumbitMonthlySms} style={{marginBottom:10}}>Send Consumer Month Bill</Button>
+          ) : null
+        }
+
 
         <Table columns={columns} dataSource={data} />
 
