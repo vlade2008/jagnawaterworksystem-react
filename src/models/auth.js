@@ -72,7 +72,6 @@ export default {
         }
       }
       catch (error){
-
         yield put({ type: 'loginFailed'});
 
       }

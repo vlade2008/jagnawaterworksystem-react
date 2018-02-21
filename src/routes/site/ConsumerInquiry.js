@@ -106,6 +106,10 @@ class ConsumerInquiry extends React.Component {
                    !_.isEmpty(this.props.inquiry.activeRecord) ? (
                      <Card title={this.props.inquiry.activeRecord.fullname}>
                        {
+
+
+                         !_.isEmpty(this.props.inquiry.activeRecord.unpaid) ?
+
                          this.props.inquiry.activeRecord.unpaid.map((mdata,key)=>{
                            return(
                              <Row gutter={16} key={key}>
@@ -136,7 +140,15 @@ class ConsumerInquiry extends React.Component {
 
                               </Row>
                            )
-                         })
+                         }) : (
+                           <Row gutter={16}>
+                              <Col className="gutter-row" span={24}>
+                                <div className="gutter-box">
+                                  <b>PAID</b>
+                                </div>
+                              </Col>
+                            </Row>
+                         )
                        }
                      </Card>
 

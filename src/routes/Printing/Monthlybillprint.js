@@ -103,21 +103,25 @@ onPrint = () =>{
                       <td style={{verticalAlign:'top'}}>{item.consumerInfo.lname + " " + item.consumerInfo.fname + " " + item.consumerInfo.mname}</td>
                       <td>
                         {
-                          item.monthlyBills.map((mdata,key)=>{
-                            return(
-                                <li key={key} style={{marginBottom:10}}>
-                                  <span>Dude Date: {moment(mdata.due_date).format('YYYY/MM/DD')}</span>
-                                  <br/>
-                                  <span>Consumption: {mdata.consumption}</span>
-                                  <br/>
-                                  <span>Charges: {mdata.charges}</span>
-                                  <br/>
-                                  <span>Amount: {mdata.net_amount}</span>
-                                  <br/>
-                                  <span>Status: {mdata.unpaid == 0 ? 'PAID' : 'NOT PAID'}</span>
-                                </li>
-                            )
-                          })
+
+                          !_.isEmpty(item.monthlyBills) ? (
+                            item.monthlyBills.map((mdata,key)=>{
+                              console.log(mdata);
+                              return(
+                                  <li key={key} style={{marginBottom:10}}>
+                                    <span>Dude Date: {moment(mdata.due_date).format('YYYY/MM/DD')}</span>
+                                    <br/>
+                                    <span>Consumption: {mdata.consumption}</span>
+                                    <br/>
+                                    <span>Charges: {mdata.charges}</span>
+                                    <br/>
+                                    <span>Amount: {mdata.net_amount}</span>
+                                    <br/>
+                                    <span>Status: {mdata.unpaid <= 0 ? 'PAID' : 'NOT PAID'}</span>
+                                  </li>
+                              )
+                            })
+                          ): null
                         }
                       </td>
                     </tr>
