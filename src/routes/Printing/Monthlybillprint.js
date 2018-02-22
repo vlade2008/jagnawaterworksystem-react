@@ -91,6 +91,7 @@ onPrint = () =>{
               <tr>
                 <th className="reportTH">Account No.</th>
                 <th className="reportTH">Name</th>
+                <th className="reportTH">Address</th>
                 <th className="reportTH">Bill</th>
               </tr>
             </thead>
@@ -101,15 +102,19 @@ onPrint = () =>{
                     <tr key={i}>
                       <td style={{verticalAlign:'top'}}>{item.consumerInfo.account_no}</td>
                       <td style={{verticalAlign:'top'}}>{item.consumerInfo.lname + " " + item.consumerInfo.fname + " " + item.consumerInfo.mname}</td>
+                      <td style={{verticalAlign:'top'}}>{item.consumerInfo.address}</td>
                       <td>
                         {
 
                           !_.isEmpty(item.monthlyBills) ? (
                             item.monthlyBills.map((mdata,key)=>{
-                              console.log(mdata);
                               return(
                                   <li key={key} style={{marginBottom:10}}>
                                     <span>Dude Date: {moment(mdata.due_date).format('YYYY/MM/DD')}</span>
+                                    <br/>
+                                    <span>Previous Reading: {mdata.previous_reading}</span>
+                                    <br/>
+                                    <span>Current Reading: {mdata.current_reading}</span>
                                     <br/>
                                     <span>Consumption: {mdata.consumption}</span>
                                     <br/>

@@ -16,6 +16,9 @@ constructor(props){
     filterDropdownVisible: false,
     searchText: '',
     filtered: false,
+    filterDropdownVisibleID: false,
+    searchTextOD: '',
+    filteredID: false,
     userlevel: localStorage.getItem('userlevel'),
     smsLoading:false
   }
@@ -109,6 +112,10 @@ onChangeUrl = key => {
     this.setState({ searchText: e.target.value });
   }
 
+  onInputChangeID = (e) => {
+    this.setState({ searchTextID: e.target.value });
+  }
+
   onSearch = () => {
     const { searchText } = this.state;
     if (_.isEmpty(searchText)) {
@@ -122,6 +129,35 @@ onChangeUrl = key => {
 
         let data = this.props.consumers.records.map((record) => {
           const match = record.lname.match(reg);
+          if (!match) {
+            return null;
+          }
+          return {
+            ...record
+          };
+        }).filter(record => !!record)
+
+        this.props.dispatch({
+          type:'consumers/updateRecord',
+          payload:data
+        })
+    }
+
+  }
+
+  onSearchID = () => {
+    const { searchTextID } = this.state;
+    if (_.isEmpty(searchTextID)) {
+      this.getConsumers();
+    }else {
+      const reg = new RegExp(searchTextID.toString(), 'gi');
+      this.setState({
+          filterDropdownVisibleID: false,
+          filteredID: !!searchTextID,
+        });
+
+        let data = this.props.consumers.records.map((record) => {
+          const match = record.account_no.toString().match(reg);
           if (!match) {
             return null;
           }
@@ -186,22 +222,46 @@ onChangeUrl = key => {
 
 
     const columns = [
-        {
-        title: 'Picture',
-        key: 'picture',
-        render: (text, record) => (
-          <span>
-            {
-              this.props.consumers.records[record.key].haspicture ? (
-                <Avatar size="large" src={baseURL+"/userApi/consumers/" + this.props.consumers.records[record.key].account_no+ "/picture"} />
-              ):(
-                <Avatar size="large" icon="user" />
-              )
-            }
+          {
+          title: 'Picture',
+          key: 'picture',
+          render: (text, record) => (
+            <span>
+              {
+                this.props.consumers.records[record.key].haspicture ? (
+                  <Avatar size="large" src={baseURL+"/userApi/consumers/" + this.props.consumers.records[record.key].account_no+ "/picture"} />
+                ):(
+                  <Avatar size="large" icon="user" />
+                )
+              }
 
-          </span>
+            </span>
+          ),
+        },
+        {
+          title:'ID',
+          key:'account_no',
+          dataIndex:'account_no',
+          filterDropdown: (
+          <div className="custom-filter-dropdown">
+            <Input
+              ref={ele => this.searchInputID = ele}
+              placeholder="Search id"
+              value={this.state.searchTextID}
+              onChange={this.onInputChangeID}
+              onPressEnter={this.onSearchID}
+            />
+            <Button type="primary" onClick={this.onSearchID}>Search</Button>
+          </div>
         ),
-      },
+        filterIcon: <Icon type="filter" style={{ color: this.state.filteredID ? '#108ee9' : '#aaa' }} />,
+        filterDropdownVisible: this.state.filterDropdownVisibleID,
+        onFilterDropdownVisibleChange: (visible) => {
+          this.setState({
+            filterDropdownVisibleID: visible,
+          }, () => this.searchInputID && this.searchInputID.focus());
+          }
+        },
       {
         title: 'Last Name',
         dataIndex: 'lname',
@@ -235,6 +295,11 @@ onChangeUrl = key => {
         title: 'Middle Name',
         dataIndex: 'mname',
         key: 'mname',
+      },
+      {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
       },
       {
       title: 'Action',

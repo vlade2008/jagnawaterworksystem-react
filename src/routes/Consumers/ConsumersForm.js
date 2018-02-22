@@ -46,6 +46,8 @@ class ConsumersForm extends React.Component {
                values.signature_of_member = this.removeBase64Prefix(signature)
                this.onsuccess(values)
              }else {
+
+
                values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
                this.onsuccess(values)
              }
@@ -58,8 +60,13 @@ class ConsumersForm extends React.Component {
            }
 
          }else {
-           delete values.picture
-           this.onsuccess(values)
+
+           if (!this.sigCanvas.isEmpty()) {
+             delete values.picture
+             let signature  = this.sigCanvas.getCanvas().toDataURL()
+             values.signature_of_member = this.removeBase64Prefix(signature)
+             this.onsuccess(values)
+           }
          }
 
 

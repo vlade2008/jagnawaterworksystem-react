@@ -92,33 +92,51 @@ onHandlePicker = (value,datestring) => {
                      item.monthlyBills.map((mdata,key)=>{
                        if (mdata.unpaid != 0) {
                          return(
-                           <Row gutter={16} key={key}>
-                              <Col className="gutter-row" span={6}>
-                                <div className="gutter-box">
-                                  <b>Bill Date</b>
-                                  <p>{moment(mdata.billing_date).format('YYYY/MM/DD')}</p>
-                                </div>
-                              </Col>
-                              <Col className="gutter-row" span={6}>
-                                <div className="gutter-box">
-                                  <b>Consumption</b>
-                                  <p>{mdata.consumption}</p>
-                                </div>
-                              </Col>
-                              <Col className="gutter-row" span={6}>
-                                <div className="gutter-box">
-                                  <b>Charge</b>
-                                  <p>{mdata.charges}</p>
-                                </div>
-                              </Col>
-                              <Col className="gutter-row" span={6}>
-                                <div className="gutter-box">
-                                  <b>Amount</b>
-                                  <p>{mdata.net_amount}</p>
-                                </div>
-                              </Col>
+                           <div>
+                             <b>Bill Date: {moment(mdata.billing_date).format('YYYY/MM/DD')}</b>
+                             <br/>
+                             <Row gutter={16} key={key}>
+                                <Col className="gutter-row" span={4}>
+                                  <div className="gutter-box">
+                                    <b>Due Date</b>
+                                    <p>{mdata.due_date}</p>
+                                  </div>
+                                </Col>
+                                <Col className="gutter-row" span={4}>
+                                  <div className="gutter-box">
+                                    <b>Previous Reading</b>
+                                    <p>{mdata.previous_reading}</p>
+                                  </div>
+                                </Col>
+                                <Col className="gutter-row" span={4}>
+                                  <div className="gutter-box">
+                                    <b>Current Reading</b>
+                                    <p>{mdata.current_reading}</p>
+                                  </div>
+                                </Col>
+                                <Col className="gutter-row" span={4}>
+                                  <div className="gutter-box">
+                                    <b>Consumption</b>
+                                    <p>{mdata.consumption}</p>
+                                  </div>
+                                </Col>
+                                <Col className="gutter-row" span={4}>
+                                  <div className="gutter-box">
+                                    <b>Charge</b>
+                                    <p>{mdata.charges}</p>
+                                  </div>
+                                </Col>
+                                <Col className="gutter-row" span={4}>
+                                  <div className="gutter-box">
+                                    <b>Amount</b>
+                                    <p>{mdata.net_amount}</p>
+                                  </div>
+                                </Col>
 
-                            </Row>
+
+
+                              </Row>
+                            </div>
                          )
                        }
 
