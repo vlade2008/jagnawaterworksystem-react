@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import {withRouter,routerRedux} from 'dva/router'
 import RouteWithSubRoutes from '../routes/RouteWithSubRoutes';
 import SideMenu from './SideMenu';
-import SiteMenu from "../routes/site/SiteMenu";
 import { Layout, Affix } from 'antd';
 const {Content } = Layout;
 

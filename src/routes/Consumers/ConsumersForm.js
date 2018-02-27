@@ -285,6 +285,34 @@ class ConsumersForm extends React.Component {
               </FormItem>
 
               <FormItem hasFeedback>
+                {getFieldDecorator('orno_appfee', {
+                  initialValue:this.props.consumers.activeRecord.orno_appfee,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'OR No Fee'
+                    },
+                  ],
+                })(
+                  <Input size="large"  placeholder="OR No Fee" />
+                )}
+              </FormItem>
+
+              <FormItem hasFeedback>
+                {getFieldDecorator('appfee', {
+                  initialValue:this.props.consumers.activeRecord.appfee,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'App Fee'
+                    },
+                  ],
+                })(
+                  <Input size="large" type="number" placeholder="App Fee" />
+                )}
+              </FormItem>
+
+              <FormItem hasFeedback>
                 {getFieldDecorator('meter_number', {
                   initialValue:this.props.consumers.activeRecord.meter_number,
                   rules: [

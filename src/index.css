@@ -38,3 +38,7 @@ html, body, :global(#root) {
   text-align: left;
   padding: 8px;
 }
+
+.sideMenuColor{
+  background-color: red;
+}
