@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table,Button,DatePicker,Icon } from 'antd';
+import { Table,Button,DatePicker,Icon,Row,Card,Col } from 'antd';
 import moment from 'moment'
 const { RangePicker } = DatePicker;
 
@@ -78,11 +78,14 @@ onPrint = () =>{
         />
         <Button style={{marginLeft:5}} type="primary"   onClick={this.onRefresh}><Icon type="reload" /></Button>
         <br/>
-        <Button onClick={this.onPrint}>
+        <br/>
+        <Button type="primary" onClick={this.onPrint}>
            Print
          </Button>
+         <br/>
+         <br/>
       <div id="monthlyPrint">
-        <table
+        {/* <table
           style={{
               width:'100%'
             }}
@@ -135,7 +138,71 @@ onPrint = () =>{
               }
 
             </tbody>
-          </table>
+          </table> */}
+
+
+          {
+            this.props.report.records.map((item,i)=>{
+              return(
+                <Card title={item.consumerInfo.lname + " " + item.consumerInfo.fname + " " + item.consumerInfo.mname} key={i}>
+                  {
+                    item.monthlyBills.map((mdata,key)=>{
+                      if (mdata.unpaid != 0) {
+                        return(
+                          <div key={key}>
+                            <b>Due Date: {moment(mdata.due_date).format('YYYY/MM/DD')}</b>
+                            <br/>
+                            <Row gutter={16} key={key}>
+                               <Col className="gutter-row" span={4}>
+                                 <div className="gutter-box">
+                                   <b>Previous Reading</b>
+                                   <p>{mdata.previous_reading}</p>
+                                 </div>
+                               </Col>
+                               <Col className="gutter-row" span={4}>
+                                 <div className="gutter-box">
+                                   <b>Current Reading</b>
+                                   <p>{mdata.current_reading}</p>
+                                 </div>
+                               </Col>
+                               <Col className="gutter-row" span={4}>
+                                 <div className="gutter-box">
+                                   <b>Consumption</b>
+                                   <p>{mdata.consumption}</p>
+                                 </div>
+                               </Col>
+                               <Col className="gutter-row" span={4}>
+                                 <div className="gutter-box">
+                                   <b>Charge</b>
+                                   <p>{mdata.charges}</p>
+                                 </div>
+                               </Col>
+                               <Col className="gutter-row" span={4}>
+                                 <div className="gutter-box">
+                                   <b>Amount</b>
+                                   <p>{mdata.net_amount}</p>
+                                 </div>
+                               </Col>
+
+                               <Col className="gutter-row" span={4}>
+                                 <div className="gutter-box">
+                                   <b>Status</b>
+                                   <p>{mdata.unpaid <= 0 ? 'PAID' : 'NOT PAID'}</p>
+                                 </div>
+                               </Col>
+
+
+                             </Row>
+                           </div>
+                        )
+                      }
+
+                    })
+                  }
+                </Card>
+              )
+            })
+          }
 
         </div>
       </div>

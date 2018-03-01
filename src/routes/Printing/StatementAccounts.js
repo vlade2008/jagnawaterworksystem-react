@@ -76,10 +76,12 @@ onHandlePicker = (value,datestring) => {
         />
         <Button style={{marginLeft:5}} type="primary"   onClick={this.onRefresh}><Icon type="reload" /></Button>
         <br/>
-
-        <Button onClick={this.onPrint} style={{marginBottom:10}}>
+        <br/>
+        <Button type="primary" onClick={this.onPrint} style={{marginBottom:10}}>
            Print
          </Button>
+         <br/>
+         <br/>
          <div id="statementPrint">
 
 

@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card ,message} from 'antd';
+import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card ,message,Row,Col} from 'antd';
 const { Meta } = Card;
 import ConsumersForm from './ConsumersForm'
-
+import moment from 'moment'
 import {baseURL} from '../../rest/rest'
 
 class Consumers extends React.Component {
@@ -189,6 +189,19 @@ onChangeUrl = key => {
   }
 
 
+  printORID = (key) =>{
+    return ()=>{
+      const printContents = document.getElementById("consumerIDOR"+this.props.consumers.records[key].account_no).innerHTML;
+      const originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents;
+
+      window.print();
+      document.body.innerHTML = originalContents;
+    }
+  }
+
+
   onSumbitMonthlySms = () =>{
 
     message.loading('Sending Message..', 80000);
@@ -316,6 +329,8 @@ onChangeUrl = key => {
                 <a onClick={this.onDelete(record.key)}>Delete</a>
                 <Divider type="vertical" />
                 <a onClick={this.printID(record.key)}>Print ID</a>
+                <Divider type="vertical" />
+                <a onClick={this.printORID(record.key)}>Print App Feee</a>
               </span>
             ): null
           }
@@ -360,27 +375,59 @@ onChangeUrl = key => {
         {
           this.props.consumers.records.map((item,i)=>{
             return(
-              <div id={"consumerID"+item.account_no} key={i} style={{display:'none'}}>
-                <Card
-                  hoverable
-                  style={{ width: 200 }}
-                  cover={
-                    <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/picture"}  />
-                  }
-                >
-                  <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/signature"} width={150}  />
-                  <Meta title={item.lname + " " + item.fname + " " + item.mname}/>
+                <div id={"consumerID"+item.account_no} key={i} style={{display:'none'}}>
+                  <Card
+                    hoverable
+                    style={{ width: 200 }}
+                    cover={
+                      <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/picture"}  />
+                    }
+                  >
+                    <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/signature"} width={150}  />
+                    <Meta title={item.lname + " " + item.fname + " " + item.mname}/>
+                  </Card>
+                </div>
+
+            )
+          })
+        }
 
 
-
-                </Card>
-
-
-
+        {
+          this.props.consumers.records.map((item,i)=>{
+            return(
+              <div id={"consumerIDOR"+item.account_no} key={i} style={{display:'none'}}>
+                <Card title={item.lname + " " + item.fname + " " + item.mname}>
+                <div>
+                  <b>Application Date:  {moment(item.application_date).format('YYYY/MM/DD')}</b>
+                  <br/>
+                  <Row gutter={16} >
+                    <Col className="gutter-row" span={8}>
+                      <div className="gutter-box">
+                        <b>Address</b>
+                        <p>{item.address}</p>
+                      </div>
+                    </Col>
+                     <Col className="gutter-row" span={8}>
+                       <div className="gutter-box">
+                         <b>OR No Ffee</b>
+                         <p>{item.orno_appfee}</p>
+                       </div>
+                     </Col>
+                     <Col className="gutter-row" span={8}>
+                       <div className="gutter-box">
+                         <b>App Fee</b>
+                         <p>{item.appfee}</p>
+                       </div>
+                     </Col>
+                   </Row>
+                 </div>
+                 </Card>
               </div>
             )
           })
         }
+
 
 
 

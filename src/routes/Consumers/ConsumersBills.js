@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,List,Avatar,Tabs } from 'antd';
+import { Table, Icon, Divider ,Button,List,Avatar,Tabs,Card,Row,Col } from 'antd';
 import ReadingForm from './ReadingForm'
 import PaymentForm from './PaymentForm'
 const TabPane = Tabs.TabPane
-
+import moment from 'moment'
 import {baseURL} from '../../rest/rest'
 
 class ConsumersBills extends React.Component {
@@ -14,7 +14,7 @@ constructor(props){
 
   this.state = {
     isModal:false,
-    bill_no:''
+    bill_no:'',
   }
 }
 
@@ -83,6 +83,30 @@ onCloseModal = (name) =>{
           bill_no:bill_no,
           isPaymentModal:true
         })
+      }
+    }
+
+
+    printBill = () =>{
+        const printContents = document.getElementById("consumerUnPaid").innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+
+
+    printReceipt = (key) =>{
+      return ()=>{
+        const printContents = document.getElementById(`consumerPay${this.props.payments.records[key].id}`).innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+        document.body.innerHTML = originalContents;
       }
     }
 
@@ -181,7 +205,16 @@ onCloseModal = (name) =>{
       title: 'Total Amount',
       dataIndex: 'total_amount',
       key: 'total_amount',
-    }
+    },
+    {
+     title: 'Action',
+     key: 'action',
+     render: (text, record) => (
+       <span>
+         <a onClick={this.printReceipt(record.key)}>Print Receipt</a>
+       </span>
+     ),
+   }
 ];
 
 
@@ -220,6 +253,8 @@ onCloseModal = (name) =>{
        render: (text, record) => (
          <span>
            <a onClick={this.onPay(record.key)}>pay</a>
+           <Divider type="vertical" />
+           <a onClick={this.printBill}>Print Bill</a>
          </span>
        ),
      }
@@ -277,6 +312,123 @@ onCloseModal = (name) =>{
             <PaymentForm bill_no={this.state.bill_no}  isModal={this.state.isPaymentModal} onCloseModal={this.onCloseModal} getConsumersMonthly={this.getConsumersMonthly} getPayments={this.getPayments} account_no={this.props.match.params.id} onCloseAllModal={this.onCloseAllModal} getUnpaid={this.getUnpaid}  />
           ):null
         }
+
+
+        <div style={{display:'none'}} id={'consumerUnPaid'}>
+          <Card title={this.props.consumers.activeRecord.lname + " " + this.props.consumers.activeRecord.fname + " " + this.props.consumers.activeRecord.mname}>
+
+            {
+              this.props.unpaid.records.map((mdata,i)=>{
+                return(
+                  <div key={i}>
+                    <div>
+                      <b>Bill Date: {moment(mdata.billing_date).format('YYYY/MM/DD')}</b>
+                      <br/>
+                      <Row gutter={16}>
+                         <Col className="gutter-row" span={4}>
+                           <div className="gutter-box">
+                             <b>Due Date</b>
+                             <p>{mdata.due_date}</p>
+                           </div>
+                         </Col>
+                         <Col className="gutter-row" span={4}>
+                           <div className="gutter-box">
+                             <b>Previous Reading</b>
+                             <p>{mdata.previous_reading}</p>
+                           </div>
+                         </Col>
+                         <Col className="gutter-row" span={4}>
+                           <div className="gutter-box">
+                             <b>Current Reading</b>
+                             <p>{mdata.current_reading}</p>
+                           </div>
+                         </Col>
+                         <Col className="gutter-row" span={4}>
+                           <div className="gutter-box">
+                             <b>Consumption</b>
+                             <p>{mdata.consumption}</p>
+                           </div>
+                         </Col>
+                         <Col className="gutter-row" span={4}>
+                           <div className="gutter-box">
+                             <b>Charge</b>
+                             <p>{mdata.charges}</p>
+                           </div>
+                         </Col>
+                         <Col className="gutter-row" span={4}>
+                           <div className="gutter-box">
+                             <b>Amount</b>
+                             <p>{mdata.net_amount}</p>
+                           </div>
+                         </Col>
+
+
+
+                       </Row>
+                     </div>
+                  </div>
+                )
+              })
+            }
+
+
+           </Card>
+        </div>
+
+
+
+
+        {
+          this.props.payments.records.map((item,i)=>{
+            return(
+              <div id={"consumerPay"+item.id} key={i} style={{display:'none'}}>
+                <Card title={this.props.consumers.activeRecord.lname + " " + this.props.consumers.activeRecord.fname + " " + this.props.consumers.activeRecord.mname}>
+                  <div>
+                    <b>Payment Date: {moment(item.payment_date).format('YYYY/MM/DD')}</b>
+                    <br/>
+                    <Row gutter={16}>
+                      <Col className="gutter-row" span={4}>
+                        <div className="gutter-box">
+                          <b>Transaction No</b>
+                          <p>{item.transaction_no}</p>
+                        </div>
+                      </Col>
+                       <Col className="gutter-row" span={4}>
+                         <div className="gutter-box">
+                           <b>OR No</b>
+                           <p>{item.or_no}</p>
+                         </div>
+                       </Col>
+                       <Col className="gutter-row" span={5}>
+                         <div className="gutter-box">
+                           <b>Penalty</b>
+                           <p>{item.penalty}</p>
+                         </div>
+                       </Col>
+
+                       <Col className="gutter-row" span={5}>
+                         <div className="gutter-box">
+                           <b>Total Amount</b>
+                           <p>{item.total_amount}</p>
+                         </div>
+                       </Col>
+                     </Row>
+                   </div>
+                 </Card>
+              </div>
+            )
+          })
+        }
+
+
+
+
+
+
+
+
+
+
 
 
       </div>
