@@ -66,6 +66,8 @@ class ConsumersForm extends React.Component {
              let signature  = this.sigCanvas.getCanvas().toDataURL()
              values.signature_of_member = this.removeBase64Prefix(signature)
              this.onsuccess(values)
+           }else {
+             this.onsuccess(values)
            }
          }
 

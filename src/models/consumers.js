@@ -101,10 +101,23 @@ export default {
            }
          })
 
+         let userlevel = localStorage.getItem('userlevel');
+         let accountlevel = localStorage.getItem('accountlevel');
+
+         let onlyConsumer = [];
+
+         if (_.includes(userlevel,'consumer')) {
+           consumers.map((item,i)=>{
+             if (_.includes(accountlevel,item.account_no)) {
+               onlyConsumer.push(item)
+             }
+           })
+         }
+
 
           yield put({
             type:"getAllConsumersSuccess",
-            payload:consumers
+            payload:_.includes(userlevel,'consumer') ? onlyConsumer : consumers
           });
 
 

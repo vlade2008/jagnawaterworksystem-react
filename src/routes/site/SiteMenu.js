@@ -27,6 +27,7 @@ class SiteMenu extends React.Component{
     localStorage.removeItem("api_key");
     localStorage.removeItem("userlevel")
     localStorage.removeItem("authID")
+    localStorage.removeItem("accountlevel")
     this.props.dispatch({
       type:'auth/logout'
     });

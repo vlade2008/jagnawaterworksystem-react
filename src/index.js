@@ -38,9 +38,9 @@ app.model(require('./models/due'))
 app.model(require('./models/unpaid'))
 app.model(require('./models/report'))
 app.model(require('./models/inquiry'))
-
+app.model(require('./models/serviceperiod'))
 // 4. Router
 app.router(require('./router'));
 
-// 5. Start notes 
+// 5. Start notes
 app.start('#root');

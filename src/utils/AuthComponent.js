@@ -8,12 +8,6 @@ export const adminOnly = (Component)=>{
             if( userlevel === 'admin' )
                 content = <Component {...this.props}/>;
 
-
-            setTimeout(()=>{
-                this.authenticate();
-            },200);
-
-
             return content
         }
     }

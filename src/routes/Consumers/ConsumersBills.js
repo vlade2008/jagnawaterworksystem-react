@@ -7,6 +7,7 @@ import PaymentForm from './PaymentForm'
 const TabPane = Tabs.TabPane
 import moment from 'moment'
 import {baseURL} from '../../rest/rest'
+import _ from 'lodash'
 
 class ConsumersBills extends React.Component {
 constructor(props){
@@ -15,6 +16,7 @@ constructor(props){
   this.state = {
     isModal:false,
     bill_no:'',
+    userlevel: localStorage.getItem('userlevel')
   }
 }
 
@@ -252,8 +254,16 @@ onCloseModal = (name) =>{
        key: 'action',
        render: (text, record) => (
          <span>
-           <a onClick={this.onPay(record.key)}>pay</a>
-           <Divider type="vertical" />
+           {
+             _.includes(this.state.userlevel,'teller') || _.includes(this.state.userlevel,'admin') ? (
+                 <span>
+                   <a onClick={this.onPay(record.key)}>pay</a>
+                   <Divider type="vertical" />
+                 </span>
+
+             ) : null
+           }
+
            <a onClick={this.printBill}>Print Bill</a>
          </span>
        ),
@@ -280,7 +290,14 @@ onCloseModal = (name) =>{
             description={this.props.consumers.activeRecord.address}
           />
         </List.Item>
-        <Button style={{marginBottom:10}} onClick={this.onOpenModal('isReadingModal')}>New Reading</Button>
+
+
+        {
+          _.includes(this.state.userlevel,'reader') ||  _.includes(this.state.userlevel,'admin') ? (
+            <Button style={{marginBottom:10}} onClick={this.onOpenModal('isReadingModal')}>New Reading</Button>
+          ): null
+        }
+
 
 
 

@@ -43,6 +43,7 @@ export default {
         })
         localStorage.removeItem('api_key')
         localStorage.removeItem('userlevel')
+        localStorage.removeItem('accountlevel')
         yield put(routerRedux.push("/login"));
 
     },
@@ -68,6 +69,7 @@ export default {
           localStorage.setItem('api_key',account.api_key)
           localStorage.setItem('userlevel',account.user.userlevel)
           localStorage.setItem('authID',account.user.id)
+          localStorage.setItem('accountlevel',account.user.account_no)
            yield put(routerRedux.push("/dashboard"));
         }
       }

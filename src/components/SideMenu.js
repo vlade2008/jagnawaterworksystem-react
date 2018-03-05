@@ -25,23 +25,28 @@ const SideMenu = (props) => {
         <Menu.Item key="2">
           <Link to={'/dashboard/consumers'}>Consumers</Link>
         </Menu.Item>
-          <Menu.SubMenu key="sub1" title={<span><Icon type="appstore" /><span>Print</span></span>}>
-            <Menu.Item key="6">
-              <Link to={'/dashboard/statementaccounts'}>Statement of Accounts</Link>
-            </Menu.Item>
-            <Menu.Item key="7">
-              <Link to={'/dashboard/monthlybill'}>Monthly Bill</Link>
-            </Menu.Item>
 
-          </Menu.SubMenu>
-
-          {
-            userlevel === 'admin' ? (
-              <Menu.Item key="8">
-                <Link to={'/dashboard/settings'}>Settings</Link>
+        {
+          _.includes(userlevel,'admin') || _.includes(userlevel,'teller') ? (
+            <Menu.SubMenu key="sub1" title={<span><Icon type="appstore" /><span>Print</span></span>}>
+              <Menu.Item key="6">
+                <Link to={'/dashboard/statementaccounts'}>Statement of Accounts</Link>
               </Menu.Item>
-            ): null
-          }
+              <Menu.Item key="7">
+                <Link to={'/dashboard/monthlybill'}>Monthly Bill</Link>
+              </Menu.Item>
+            </Menu.SubMenu>
+          ): null
+        }
+
+
+        {
+          userlevel === 'admin' ? (
+            <Menu.Item key="8">
+              <Link to={'/dashboard/settings'}>Settings</Link>
+            </Menu.Item>
+          ): null
+        }
 
 
           {/* <Menu.Item key="8">

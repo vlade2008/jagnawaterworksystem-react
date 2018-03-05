@@ -7,6 +7,7 @@ const TabPane = Tabs.TabPane
 import Users from '../Users/Users'
 import ConsumerTypes from '../ConsumerTypes/ConsumerTypes'
 import Due from '../Due/Due'
+import ServicePeriod from '../ServicePeriod/ServicePeriod'
 
 
 class Settings extends React.Component {
@@ -34,6 +35,9 @@ constructor(props){
           </TabPane>
           <TabPane tab="Due Date" key="3">
             <Due {...this.props} />
+          </TabPane>
+          <TabPane tab="Service Period" key="4">
+            <ServicePeriod {...this.props} />
           </TabPane>
         </Tabs>
 
