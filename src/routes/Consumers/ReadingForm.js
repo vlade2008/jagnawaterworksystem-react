@@ -102,7 +102,7 @@ class ReadingForm extends React.Component {
           <Form onSubmit={this.handleSubmit}>
 
 
-
+{/*
               <FormItem hasFeedback>
                 {getFieldDecorator('service_period_end', {
                   rules: [
@@ -114,7 +114,7 @@ class ReadingForm extends React.Component {
                 })(
                   <Input size="large"  placeholder="Service Period End" />
                 )}
-              </FormItem>
+              </FormItem> */}
 
 
               <FormItem hasFeedback>
