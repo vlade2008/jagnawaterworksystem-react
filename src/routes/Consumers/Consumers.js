@@ -20,7 +20,8 @@ constructor(props){
     searchTextOD: '',
     filteredID: false,
     userlevel: localStorage.getItem('userlevel'),
-    smsLoading:false
+    smsLoading:false,
+    allFilter:''
   }
 
 }
@@ -229,6 +230,30 @@ onChangeUrl = key => {
     }
   }
 
+  onSearchAllFilter = (data) =>{
+    if (_.isEmpty(data)) {
+      this.getConsumers();
+    }else {
+      const reg = new RegExp(data, 'gi');
+
+
+        let data = this.props.consumers.records.map((record) => {
+          const match = record.allFilter.match(reg);
+          if (!match) {
+            return null;
+          }
+          return {
+            ...record
+          };
+        }).filter(record => !!record)
+
+        this.props.dispatch({
+          type:'consumers/updateRecord',
+          payload:data
+        })
+    }
+  }
+
 
   render() {
 
@@ -242,7 +267,7 @@ onChangeUrl = key => {
             <span>
               {
                 this.props.consumers.records[record.key].haspicture ? (
-                  <Avatar size="large" src={baseURL+"/userApi/consumers/" + this.props.consumers.records[record.key].account_no+ "/picture"} />
+                  <Avatar size="large" src={baseURL+"/userApi/consumers/" + this.props.consumers.records[record.key].account_no+ "/picture"} style={{width:100,height:70}} />
                 ):(
                   <Avatar size="large" icon="user" />
                 )
@@ -362,6 +387,18 @@ onChangeUrl = key => {
           ) : null
         }
 
+        {
+          this.state.userlevel === 'admin' || this.state.userlevel === 'teller' ? (
+            <div style={{display:'block'}}>
+                <Input.Search onSearch={this.onSearchAllFilter} enterButton style={{width:'25%'}} placeholder="Search"/>
+            </div>
+
+          ): null
+        }
+
+
+
+
 
         <Table columns={columns} dataSource={data} />
 
@@ -384,7 +421,9 @@ onChangeUrl = key => {
                     }
                   >
                     <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/signature"} width={150}  />
-                    <Meta title={item.lname + " " + item.fname + " " + item.mname}/>
+                    <p style={{textAlign:'center'}}>ID:{item.account_no}</p>
+                    <Meta style={{textAlign:'center'}} title={item.lname + " " + item.fname + " " + item.mname}/>
+
                   </Card>
                 </div>
 

@@ -287,7 +287,7 @@ onCloseModal = (name) =>{
 
             }
             title={`${this.props.consumers.activeRecord.lname} , ${this.props.consumers.activeRecord.fname} , ${this.props.consumers.activeRecord.mname} `}
-            description={this.props.consumers.activeRecord.address}
+            description={'Meter Number:'+this.props.consumers.activeRecord.meter_number + ' Address: ' + this.props.consumers.activeRecord.address}
           />
         </List.Item>
 

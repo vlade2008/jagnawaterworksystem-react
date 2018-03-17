@@ -2,17 +2,24 @@
 import React from 'react';
 
 import { connect } from 'dva';
-import { Button, Form, Input,DatePicker,Select,InputNumber,Modal,Upload,Icon,message,Card } from 'antd'
+import { Button, Form, Input,DatePicker,Select,InputNumber,Modal,Upload,Icon,message,Card,Alert } from 'antd'
 import SignatureCanvas from 'react-signature-canvas'
 const FormItem = Form.Item;
 const Option = Select.Option
 import moment from 'moment'
+import Photo from '../../components/Photo'
 
 
 class ConsumersForm extends React.Component {
   constructor(props){
     super(props)
+
+
+    this.state = {
+      showCamera: false
+    }
   }
+
 
 
 
@@ -38,9 +45,10 @@ class ConsumersForm extends React.Component {
        if (!err) {
 
 
-         if (values.picture ) {
-           if (values.picture[0].size <= 200827) {
-              values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
+
+
+         if (this.state.pictureData ) {
+              values.picture = this.removeBase64Prefix(this.state.pictureData)
              if (!this.sigCanvas.isEmpty()) {
                let signature  = this.sigCanvas.getCanvas().toDataURL()
                values.signature_of_member = this.removeBase64Prefix(signature)
@@ -48,16 +56,13 @@ class ConsumersForm extends React.Component {
              }else {
 
 
-               values.picture = this.removeBase64Prefix(values.picture[0].thumbUrl)
+               values.picture = this.removeBase64Prefix(this.state.pictureData)
                this.onsuccess(values)
              }
 
 
 
 
-           }else {
-              message.error('Reduce large image sizes. (200kb allow)');
-           }
 
          }else {
 
@@ -129,6 +134,20 @@ class ConsumersForm extends React.Component {
     this.sigCanvas.clear()
   }
 
+  onTakePicture=(img)=>{
+        this.setState({
+          showCamera:false,
+          pictureData: img ? img : false
+        });
+
+    };
+
+  onShowCamera = () =>{
+    this.setState({
+      showCamera:true
+    })
+  }
+
 
   render() {
 
@@ -145,6 +164,19 @@ class ConsumersForm extends React.Component {
      },
    };
 
+
+   var picPanel = (
+        <div>
+          {
+            this.state.pictureData ? (
+              <img   src={this.state.pictureData}/>
+            ): (
+              <Alert message="No Picture" type="info" showIcon />
+            )
+          }
+
+        </div>
+      )
 
     return (
 
@@ -329,24 +361,9 @@ class ConsumersForm extends React.Component {
               </FormItem>
 
 
-              <FormItem hasFeedback >
-                  {getFieldDecorator('picture', {
-                    valuePropName: 'fileList',
-                    getValueFromEvent: this.normFile,
-                    rules: [
-                      {
-                        required: this.props.consumers.activeRecord.account_no ? false : true,
-                        message: 'Picture'
-                      },
-                    ],
-                  })(
-                    <Upload  listType="picture">
-                      <Button>
-                        <Icon type="upload" /> Click to upload
-                      </Button>
-                    </Upload>
-                  )}
-                </FormItem>
+
+              {picPanel}
+              <Button style={{marginTop:5}} onClick={this.onShowCamera}>Capture Photo</Button>
 
 
                 <FormItem>
@@ -364,6 +381,13 @@ class ConsumersForm extends React.Component {
                 </Button>
               </FormItem>
           </Form>
+
+
+          {
+            this.state.showCamera ? (
+              <Photo  show={this.state.showCamera} onClose={this.onTakePicture}/>
+            ) : null
+          }
 
         </Modal>
     )

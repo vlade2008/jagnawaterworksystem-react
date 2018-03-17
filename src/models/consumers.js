@@ -106,6 +106,11 @@ export default {
 
          let onlyConsumer = [];
 
+         consumers = consumers.map((item,i)=>{
+           item.allFilter = item.account_no.toString() + ' ' + item.lname + ' ' + item.fname + ' '+ item.mname +' '+ item.address;
+           return item
+         })
+
          if (_.includes(userlevel,'consumer')) {
            consumers.map((item,i)=>{
              if (_.includes(accountlevel,item.account_no)) {
