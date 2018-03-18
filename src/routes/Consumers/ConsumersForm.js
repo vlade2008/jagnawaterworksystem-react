@@ -45,7 +45,7 @@ class ConsumersForm extends React.Component {
        if (!err) {
 
 
-
+         values.status = true;
 
          if (this.state.pictureData ) {
               values.picture = this.removeBase64Prefix(this.state.pictureData)

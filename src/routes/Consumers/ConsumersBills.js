@@ -9,6 +9,7 @@ import moment from 'moment'
 import {baseURL} from '../../rest/rest'
 import _ from 'lodash'
 
+
 class ConsumersBills extends React.Component {
 constructor(props){
   super(props);
@@ -137,8 +138,12 @@ onCloseModal = (name) =>{
     },
     {
       title:'Due Date',
-      dataIndex:'due_date',
-      key:'due_date'
+      key:'due_date',
+      render: (text, record) => (
+        <span>
+          {moment(this.props.consumers.monthlyRecord[record.key].due_date).format('YYYY-MM-D')}
+        </span>
+      ),
     },
     {
      title: 'Amount',
@@ -160,8 +165,12 @@ onCloseModal = (name) =>{
       },
       {
         title: 'Reading Date',
-        dataIndex: 'reading_date',
         key: 'reading_date',
+        render: (text, record) => (
+          <span>
+            {moment(this.props.reading.records[record.key].reading_date).format('YYYY-MM-D')}
+          </span>
+        ),
       },
       {
          title: 'Previous Reading',
@@ -172,11 +181,6 @@ onCloseModal = (name) =>{
         title: 'Current Reading',
         dataIndex: 'current_reading',
         key: 'current_reading',
-      },
-      {
-        title: 'Meter Number',
-        dataIndex: 'meter_number',
-        key: 'meter_number',
       }
   ];
 
@@ -195,8 +199,12 @@ onCloseModal = (name) =>{
     },
     {
       title: 'Payment Date',
-      dataIndex: 'payment_date',
       key: 'payment_date',
+      render: (text, record) => (
+        <span>
+          {moment(this.props.payments.records[record.key].payment_date).format('YYYY-MM-D')}
+        </span>
+      ),
     },
     {
        title: 'Penalty',
@@ -241,8 +249,12 @@ onCloseModal = (name) =>{
       },
       {
         title:'Due Date',
-        dataIndex:'due_date',
-        key:'due_date'
+        key:'due_date',
+        render: (text, record) => (
+          <span>
+            {moment(this.props.unpaid.records[record.key].due_date).format('YYYY-MM-D')}
+          </span>
+        ),
       },
       {
        title: 'Amount',

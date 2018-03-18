@@ -85,66 +85,23 @@ onPrint = () =>{
          <br/>
          <br/>
       <div id="monthlyPrint">
-        {/* <table
-          style={{
-              width:'100%'
-            }}
-          >
-            <thead>
-              <tr>
-                <th className="reportTH">Account No.</th>
-                <th className="reportTH">Name</th>
-                <th className="reportTH">Address</th>
-                <th className="reportTH">Bill</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.props.report.records.map((item,i)=>{
-                  return(
-                    <tr key={i}>
-                      <td style={{verticalAlign:'top'}}>{item.consumerInfo.account_no}</td>
-                      <td style={{verticalAlign:'top'}}>{item.consumerInfo.lname + " " + item.consumerInfo.fname + " " + item.consumerInfo.mname}</td>
-                      <td style={{verticalAlign:'top'}}>{item.consumerInfo.address}</td>
-                      <td>
-                        {
 
-                          !_.isEmpty(item.monthlyBills) ? (
-                            item.monthlyBills.map((mdata,key)=>{
-                              return(
-                                  <li key={key} style={{marginBottom:10}}>
-                                    <span>Dude Date: {moment(mdata.due_date).format('YYYY/MM/DD')}</span>
-                                    <br/>
-                                    <span>Previous Reading: {mdata.previous_reading}</span>
-                                    <br/>
-                                    <span>Current Reading: {mdata.current_reading}</span>
-                                    <br/>
-                                    <span>Consumption: {mdata.consumption}</span>
-                                    <br/>
-                                    <span>Charges: {mdata.charges}</span>
-                                    <br/>
-                                    <span>Amount: {mdata.net_amount}</span>
-                                    <br/>
-                                    <span>Status: {mdata.unpaid <= 0 ? 'PAID' : 'NOT PAID'}</span>
-                                  </li>
-                              )
-                            })
-                          ): null
-                        }
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-
-            </tbody>
-          </table> */}
+        <h1 style={{textAlign:'center',marginBottom:5}}>Month Bill</h1>
+        <h3 style={{textAlign:'center',marginBottom:20}}>{moment(this.state.value[0]).format('MMMM Do YYYY')} - {moment(this.state.value[1]).format('MMMM Do YYYY')}</h3>
 
 
           {
             this.props.report.records.map((item,i)=>{
+              item.consumerInfo.lname = item.consumerInfo.lname.toUpperCase()
+              item.consumerInfo.fname = item.consumerInfo.fname.toUpperCase()
+              item.consumerInfo.mname = item.consumerInfo.mname.toUpperCase()
+              item.consumerInfo.address = item.consumerInfo.address.toUpperCase()
               return(
-                <Card title={item.consumerInfo.lname + " " + item.consumerInfo.fname + " " + item.consumerInfo.mname} key={i}>
+                <Card style={{
+                  display:item.monthlyBills.length == 0 ? 'none' : 'block'
+                 }}
+                 title={item.consumerInfo.lname + " " + item.consumerInfo.fname + " " + item.consumerInfo.mname} key={i}>
+                 <b>Address {item.consumerInfo.address}</b>
                   {
                     item.monthlyBills.map((mdata,key)=>{
                       if (mdata.unpaid != 0) {

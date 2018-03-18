@@ -93,7 +93,7 @@ class ReadingForm extends React.Component {
 
       <Modal
           style={{ width: '100%',top:20 }}
-          title="New Form"
+          title="New Reading"
           visible={this.props.isModal}
           onCancel={this.props.onCloseModal('isReadingModal')}
           footer={null}
@@ -117,7 +117,7 @@ class ReadingForm extends React.Component {
               </FormItem> */}
 
 
-              <FormItem hasFeedback>
+              {/* <FormItem hasFeedback>
                 {getFieldDecorator('meter_number', {
                   rules: [
                     {
@@ -128,7 +128,7 @@ class ReadingForm extends React.Component {
                 })(
                   <Input size="large" type="number" placeholder="Meter Number" />
                 )}
-              </FormItem>
+              </FormItem> */}
 
               <FormItem hasFeedback >
                 {getFieldDecorator('current_reading', {

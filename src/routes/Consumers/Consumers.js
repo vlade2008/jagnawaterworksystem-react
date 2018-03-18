@@ -1,11 +1,13 @@
 
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card ,message,Row,Col} from 'antd';
+import { Table, Icon, Divider ,Button,Modal,Input,Avatar,Card ,message,Row,Col,Tag} from 'antd';
 const { Meta } = Card;
 import ConsumersForm from './ConsumersForm'
 import moment from 'moment'
 import {baseURL} from '../../rest/rest'
+
+const confirm = Modal.confirm;
 
 class Consumers extends React.Component {
 constructor(props){
@@ -230,27 +232,78 @@ onChangeUrl = key => {
     }
   }
 
-  onSearchAllFilter = (data) =>{
-    if (_.isEmpty(data)) {
-      this.getConsumers();
-    }else {
-      const reg = new RegExp(data, 'gi');
+  onSearchAllFilter = (input) =>{
+      if (_.isEmpty(input)) {
+        this.getConsumers();
+      }else {
+        const reg = new RegExp(input, 'gi');
 
 
-        let data = this.props.consumers.records.map((record) => {
-          const match = record.allFilter.match(reg);
-          if (!match) {
-            return null;
-          }
-          return {
-            ...record
-          };
-        }).filter(record => !!record)
+          let data = this.props.consumers.records.map((record) => {
+            const match = record.allFilter.match(reg);
+            // const match = _.includes(record.allFilter,input)
+            if (!match) {
+              return null;
+            }
+            return {
+              ...record
+            };
+          }).filter(record => !!record)
 
-        this.props.dispatch({
-          type:'consumers/updateRecord',
-          payload:data
-        })
+          this.props.dispatch({
+            type:'consumers/updateRecord',
+            payload:data
+          })
+      }
+
+  }
+
+  isDisconnectConsumer  = (data) =>{
+    return ()=>{
+
+      if (this.state.userlevel === 'admin') {
+        confirm({
+          title: 'Do you Want to disconnect these consumer?',
+          content: '',
+          onOk:()=>{
+            let payload = {status:false,account_no:data.account_no}
+            this.props.dispatch({
+              type:'consumers/updateConsumers',
+              payload: payload,
+              callback:this.getConsumers
+            });
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
+      }
+
+    }
+
+  }
+
+  isConnectConsumer = (data) =>{
+    return ()=>{
+
+      if (this.state.userlevel === 'admin') {
+        confirm({
+          title: 'Do you Want to connect these consumer?',
+          content: '',
+          onOk:()=>{
+            let payload = {status:true,account_no:data.account_no}
+            this.props.dispatch({
+              type:'consumers/updateConsumers',
+              payload: payload,
+              callback:this.getConsumers
+            });
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
+      }
+
     }
   }
 
@@ -260,6 +313,22 @@ onChangeUrl = key => {
 
 
     const columns = [
+            {
+            title: 'Status',
+            key: 'status',
+            render: (text, record) => (
+              <span>
+                {!_.isEmpty(this.props.consumers.records[record.key].status) && this.props.consumers.records[record.key].status == 1 ? (
+                   <Button type="primary" onClick={this.isDisconnectConsumer(this.props.consumers.records[record.key])}>Connected</Button>
+                ) :(
+                   <Button type="danger" onClick={this.isConnectConsumer(this.props.consumers.records[record.key])}>Not Connected</Button>
+                )
+
+              }
+
+              </span>
+            ),
+          },
           {
           title: 'Picture',
           key: 'picture',
