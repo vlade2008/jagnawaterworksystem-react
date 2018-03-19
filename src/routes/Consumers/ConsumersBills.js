@@ -285,6 +285,10 @@ onCloseModal = (name) =>{
     let isBill = !_.isEmpty(this.props.consumers.monthlyRecord) ? true : false
 
 
+
+    let idxType = _.findIndex(this.props.consumertypes.records,{id:this.props.consumers.activeRecord.consumer_type})
+
+    let typeConsumer = idxType == -1 ? null :  this.props.consumertypes.records[idxType].name ;
     return (
       <div>
 
@@ -299,9 +303,18 @@ onCloseModal = (name) =>{
 
             }
             title={`${this.props.consumers.activeRecord.lname} , ${this.props.consumers.activeRecord.fname} , ${this.props.consumers.activeRecord.mname} `}
-            description={'Meter Number:'+this.props.consumers.activeRecord.meter_number + ' Address: ' + this.props.consumers.activeRecord.address}
+            description={
+              (
+                <div>
+                  <p style={{marginBottom:2}}>{'Meter Number: '+this.props.consumers.activeRecord.meter_number}</p>
+                  <p style={{marginBottom:2}}>{'Address: ' + this.props.consumers.activeRecord.address}</p>
+                  <p style={{marginBottom:2}}>{'Type: ' + typeConsumer}</p>
+                </div>
+              )
+            }
           />
         </List.Item>
+
 
 
         {
@@ -472,7 +485,8 @@ function mapStateToProps(state){
     consumers:state.consumers,
     reading:state.reading,
     payments:state.payments,
-    unpaid:state.unpaid
+    unpaid:state.unpaid,
+    consumertypes:state.consumertypes
   }
 }
 

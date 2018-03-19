@@ -170,8 +170,21 @@ class UserForm extends React.Component {
                     <Option value="admin">Admin</Option>
                     <Option value="teller">Teller</Option>
                     <Option value="reader">Reader</Option>
+                    <Option value="consumer">Consumer</Option>
                   </Select>
                 )}
+              </FormItem>
+
+
+              <FormItem hasFeedback >
+                {getFieldDecorator('account_no', {
+                  rules: [
+                    {
+                      required: false,
+                      message: 'Please input Account No!',
+                    },
+                  ],
+                })(  <Input size="large" type="number" placeholder="Account No" />)}
               </FormItem>
 
 

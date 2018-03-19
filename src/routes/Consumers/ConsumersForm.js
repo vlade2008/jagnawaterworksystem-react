@@ -368,7 +368,7 @@ class ConsumersForm extends React.Component {
 
                 <FormItem>
                   <h3>Signature</h3>
-                  <Card>
+                  <Card style={{backgroundColor:'gray'}}>
                     <SignatureCanvas ref={(ref)=>{this.sigCanvas = ref}} canvasProps={{width: 500, height: 200}} />
                     <Button onClick={this.onClearSignature}>Clear</Button>
                   </Card>

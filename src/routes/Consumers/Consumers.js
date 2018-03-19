@@ -30,6 +30,7 @@ constructor(props){
 
 componentDidMount() {
     this.getConsumers();
+    this.getConsumerType();
 
   }
 
@@ -39,6 +40,13 @@ getConsumers = () =>{
     });
 
 }
+
+getConsumerType = () =>{
+  this.props.dispatch({
+      type:'consumertypes/getAllConsumertypes'
+    });
+}
+
 
 
   clearUpdateForm = () =>{
@@ -309,9 +317,6 @@ onChangeUrl = key => {
 
 
   render() {
-
-
-
     const columns = [
             {
             title: 'Status',
@@ -480,6 +485,8 @@ onChangeUrl = key => {
 
         {
           this.props.consumers.records.map((item,i)=>{
+            let idxType = _.findIndex(this.props.consumertypes.records,{id:item.consumer_type})
+
             return(
                 <div id={"consumerID"+item.account_no} key={i} style={{display:'none'}}>
                   <Card
@@ -492,7 +499,12 @@ onChangeUrl = key => {
                     <img  src={baseURL+"/userApi/consumers/" + item.account_no+ "/signature"} width={150}  />
                     <p style={{textAlign:'center'}}>ID:{item.account_no}</p>
                     <Meta style={{textAlign:'center'}} title={item.lname + " " + item.fname + " " + item.mname}/>
+                    <p style={{textAlign:'center'}}><b>{item.address}</b></p>
+                    <p style={{textAlign:'center',fontWeight:'italic'}}>{
 
+                      idxType == -1 ?  null : this.props.consumertypes.records[idxType].name
+
+                    }</p>
                   </Card>
                 </div>
 
@@ -550,7 +562,8 @@ onChangeUrl = key => {
 
 function mapStateToProps(state){
   return {
-    consumers:state.consumers
+    consumers:state.consumers,
+    consumertypes:state.consumertypes
   }
 }
 
