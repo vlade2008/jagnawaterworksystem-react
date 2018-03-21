@@ -91,6 +91,11 @@ getConsumerType = () =>{
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
+      render:(text,record,idx) =>(
+          <span>
+            {this.props.consumertypes.records[idx].prince}/m3
+          </span>
+        )
     }, {
       title: 'Action',
       key: 'action',
