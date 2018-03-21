@@ -429,7 +429,7 @@ onChangeUrl = key => {
                 <Divider type="vertical" />
                 <a onClick={this.printID(record.key)}>Print ID</a>
                 <Divider type="vertical" />
-                <a onClick={this.printORID(record.key)}>Print App Feee</a>
+                <a onClick={this.printORID(record.key)}>Print App Fee</a>
               </span>
             ): null
           }
@@ -530,7 +530,7 @@ onChangeUrl = key => {
                     </Col>
                      <Col className="gutter-row" span={8}>
                        <div className="gutter-box">
-                         <b>OR No Ffee</b>
+                         <b>OR No Fee</b>
                          <p>{item.orno_appfee}</p>
                        </div>
                      </Col>
