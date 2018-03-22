@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
     let connected = 0
 
     _.map(this.props.consumers.records,(item)=>{
-      if (item.status === "0") {
+      if (item.status === "0" || _.isEmpty(item.status)) {
         notConnected = notConnected + 1;
       }
       if (item.status === "1") {
