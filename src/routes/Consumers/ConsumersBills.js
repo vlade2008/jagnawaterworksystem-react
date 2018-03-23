@@ -49,7 +49,16 @@ onCloseModal = (name) =>{
       this.getReading();
       this.getPayments()
       this.getUnpaid()
+      this.getUsers()
   }
+
+  getUsers = () =>{
+    this.props.dispatch({
+        type:'users/getAllUsers'
+      });
+  }
+
+
 
   getReading = () =>{
     this.props.dispatch({
@@ -164,6 +173,22 @@ onCloseModal = (name) =>{
         key: 'service_period_end',
       },
       {
+        title: 'Read By',
+        key: 'read_by',
+        render: (text, record) => {
+          let idReadby = this.props.reading.records[record.key].read_by;
+          let idx = _.findIndex(this.props.users.records,{id:idReadby});
+          return(
+            <span>
+              {
+                idx == -1  ? "" : this.props.users.records[idx].name
+              }
+            </span>
+          )
+        },
+      },
+
+      {
         title: 'Reading Date',
         key: 'reading_date',
         render: (text, record) => (
@@ -196,6 +221,22 @@ onCloseModal = (name) =>{
       title: 'Transaction No',
       dataIndex: 'transaction_no',
       key: 'transaction_no',
+    },
+    {
+      title:'Teller Name',
+      key:'teller_name',
+      render: (text, record) => {
+        let idTeller = this.props.payments.records[record.key].teller;
+        let idx = _.findIndex(this.props.users.records,{id:parseInt(idTeller)});
+        console.log(idx);
+        return(
+          <span>
+            {
+              idx == -1 ? "" : this.props.users.records[idx].name
+            }
+          </span>
+        )
+      },
     },
     {
       title: 'Payment Date',
@@ -486,7 +527,8 @@ function mapStateToProps(state){
     reading:state.reading,
     payments:state.payments,
     unpaid:state.unpaid,
-    consumertypes:state.consumertypes
+    consumertypes:state.consumertypes,
+    users:state.users
   }
 }
 

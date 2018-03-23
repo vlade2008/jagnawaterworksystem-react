@@ -188,6 +188,19 @@ class UserForm extends React.Component {
               </FormItem>
 
 
+              <FormItem hasFeedback >
+                {getFieldDecorator('name', {
+                  initialValue:this.props.users.activeRecord.name,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input your username!',
+                    },
+                  ],
+                })(<Input size="large" placeholder="Name"  />)}
+              </FormItem>
+
+
 
 
 

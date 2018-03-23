@@ -11,6 +11,10 @@ import moment from 'moment'
 class PaymentForm extends React.Component {
   constructor(props){
     super(props)
+
+    this.state = {
+      userID: localStorage.getItem('authID')
+    }
   }
 
 
@@ -22,8 +26,11 @@ class PaymentForm extends React.Component {
      this.props.form.validateFieldsAndScroll((err, values) => {
        if (!err) {
 
+
+
          values.account_no = this.props.account_no
          values.bill_no = this.props.bill_no
+         values.teller = this.state.userID.toString()
          values.payment_date = moment()
          values.or_date = moment()
 
