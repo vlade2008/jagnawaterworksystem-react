@@ -132,7 +132,7 @@ class PaymentForm extends React.Component {
                     },
                   ],
                 })(
-                  <Input size="large" type="number" placeholder="Penalty" />
+                  <InputNumber size="large" step={0.00} placeholder="Penalty" style={{width:'100%'}} />
                 )}
               </FormItem>
 
@@ -146,7 +146,7 @@ class PaymentForm extends React.Component {
                       message: 'Total Amount',
                     },
                   ],
-                })(<Input size="large"  type="number" placeholder="Total Amount" />)}
+                })(<InputNumber size="large" step={0.00} placeholder="Total Amount" style={{width:'100%'}} />)}
               </FormItem>
 
 

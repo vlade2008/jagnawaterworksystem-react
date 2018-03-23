@@ -120,7 +120,7 @@ class ConsumerTypesForm extends React.Component {
                       message: 'Please input your price!'
                     },
                   ],
-                })(<Input size="large" type="number" placeholder="Price"  />)}
+                })(<InputNumber size="large"  step={0.00} placeholder="Price" style={{width:'100%'}}  />)}
               </FormItem>
 
 
